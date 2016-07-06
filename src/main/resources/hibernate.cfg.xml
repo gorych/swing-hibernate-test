@@ -12,7 +12,7 @@
         <property name="connection.username">admin</property>
         <property name="connection.password">admin</property>
 
-        <property name="hbm2ddl.auto">create-drop</property>
+        <property name="hbm2ddl.auto">validate</property>
         <property name="hibernate.current_session_context_class">thread</property>
 
         <mapping class="by.gstu.computerdetails.entity.Monitor"/>

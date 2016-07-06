@@ -1,10 +1,11 @@
 package by.gstu.computerdetails.forms;
 
 import by.gstu.computerdetails.config.FormConfig;
-import by.gstu.computerdetails.dao.impl.ScreenResolutionDaoImpl;
-import by.gstu.computerdetails.entity.ScreenResolution;
+import by.gstu.computerdetails.dao.impl.MonitorDaoImpl;
+import by.gstu.computerdetails.entity.Monitor;
 
 import javax.swing.*;
+import java.util.List;
 
 public class MainForm {
 
@@ -21,7 +22,9 @@ public class MainForm {
         root.setLocationRelativeTo(null);
         root.setVisible(true);
 
-        new ScreenResolutionDaoImpl().add(new ScreenResolution(1, 1));
+        MonitorDaoImpl monitorDao = new MonitorDaoImpl();
+        List<Monitor> monitors = monitorDao.findAll();
+        System.out.println(monitors);
     }
 
 }
