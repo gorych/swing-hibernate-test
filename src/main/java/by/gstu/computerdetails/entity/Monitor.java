@@ -1,5 +1,6 @@
 package by.gstu.computerdetails.entity;
 
+import by.gstu.computerdetails.annotation.TableColumn;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
@@ -25,6 +26,55 @@ public class Monitor extends BaseEntity implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "screen_resolution_id")
     private ScreenResolution screenResolution;
+
+    @TableColumn(name = "Наименование")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @TableColumn(name = "Цена, руб.")
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    @TableColumn(name = "Диагональ, дюйм")
+    public double getDiagonal() {
+        return diagonal;
+    }
+
+    public void setDiagonal(double diagonal) {
+        this.diagonal = diagonal;
+    }
+
+    @TableColumn(name = "Гарантийный период, мес")
+    public int getGuaranteePeriod() {
+        return guaranteePeriod;
+    }
+
+    public void setGuaranteePeriod(int guaranteePeriod) {
+        this.guaranteePeriod = guaranteePeriod;
+    }
+
+    @TableColumn(name = "Разрешение")
+    public String getFormatScreenResolution() {
+        return screenResolution.getX() + " x " + screenResolution.getY();
+    }
+
+    public ScreenResolution getScreenResolution() {
+        return screenResolution;
+    }
+
+    public void setScreenResolution(ScreenResolution screenResolution) {
+        this.screenResolution = screenResolution;
+    }
 
     @Override
     public String toString() {
