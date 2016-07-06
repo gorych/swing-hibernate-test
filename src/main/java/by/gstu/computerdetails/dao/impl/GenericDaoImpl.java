@@ -18,24 +18,35 @@ public abstract class GenericDaoImpl<E, K extends Serializable> implements Gener
         daoType = (Class<? extends E>) pt.getActualTypeArguments()[0];
     }
 
-    protected Session getSession(){
-        return  HibernateUtil.getSession();
+    protected Session getSession() {
+        return HibernateUtil.getSession();
     }
 
     public void add(E entity) {
+        HibernateUtil.beginTransaction();
         getSession().saveOrUpdate(entity);
+        HibernateUtil.commitTransaction();
     }
 
     public E saveOrUpdate(E entity) {
+        HibernateUtil.beginTransaction();
         getSession().saveOrUpdate(entity);
+        HibernateUtil.commitTransaction();
+
         return entity;
     }
 
     public void remove(E entity) {
+        HibernateUtil.beginTransaction();
         getSession().remove(entity);
+        HibernateUtil.commitTransaction();
     }
 
     public E find(K key) {
-        return getSession().get(daoType, key);
+        HibernateUtil.beginTransaction();
+        E entity = getSession().get(daoType, key);
+        HibernateUtil.commitTransaction();
+
+        return entity;
     }
 }
