@@ -1,14 +1,23 @@
-package by.gstu.computerdetails.forms;
+package by.gstu.computerdetails.form;
 
 import by.gstu.computerdetails.config.FormConfig;
+import by.gstu.computerdetails.dao.MonitorDao;
 import by.gstu.computerdetails.dao.impl.MonitorDaoImpl;
 import by.gstu.computerdetails.entity.Monitor;
+import by.gstu.computerdetails.model.UniversalTableModel;
 
 import javax.swing.*;
 import java.util.List;
 
 public class MainForm {
 
+    private static MonitorDao monitorDao;
+
+    static {
+        monitorDao = new MonitorDaoImpl();
+    }
+
+    private JTable monitorTable;
     private JPanel mainPanel;
 
     public static void main(String[] args) {
@@ -21,10 +30,17 @@ public class MainForm {
         /*Null equals center screen here*/
         root.setLocationRelativeTo(null);
         root.setVisible(true);
-
-        MonitorDaoImpl monitorDao = new MonitorDaoImpl();
-        List<Monitor> monitors = monitorDao.findAll();
-        System.out.println(monitors);
     }
 
+    private void createUIComponents() {
+        List<Monitor> monitors = monitorDao.findAll();
+        UniversalTableModel<Monitor> model = new UniversalTableModel<Monitor>(monitors);
+
+        monitorTable = new JTable(model);
+        try {
+            Class<?> clazz = Class.forName("by.gstu.computerdetails.entity.Monitor");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }

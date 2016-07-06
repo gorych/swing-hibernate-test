@@ -1,24 +1,22 @@
 package by.gstu.computerdetails.model;
 
-import by.gstu.computerdetails.entity.BaseEntity;
-
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
-public class UniversalTableModel extends AbstractTableModel {
+public class UniversalTableModel<T> extends AbstractTableModel {
 
-    List<? extends BaseEntity> data;
+    private List<T> data;
 
-    public UniversalTableModel(List<? extends BaseEntity> entities) {
+    public UniversalTableModel(List<T> entities) {
         super();
         this.data = entities;
     }
 
-    public List<? extends BaseEntity> getData() {
+    public List<T> getData() {
         return data;
     }
 
-    public void setData(List<? extends BaseEntity> data) {
+    public void setData(List<T> data) {
         this.data = data;
     }
 

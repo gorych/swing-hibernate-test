@@ -36,7 +36,7 @@ public class Monitor extends BaseEntity implements Serializable {
         this.name = name;
     }
 
-    @TableColumn(name = "Цена, руб.")
+    @TableColumn(name = "Цена, руб")
     public BigDecimal getPrice() {
         return price;
     }
