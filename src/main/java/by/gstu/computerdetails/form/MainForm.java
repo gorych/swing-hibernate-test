@@ -35,13 +35,14 @@ public class MainForm {
     private void createUIComponents() {
         try {
             List<Monitor> monitors = monitorDao.findAll();
+            //TODO Make without hard binding with class
             Class<?> clazz = Class.forName("by.gstu.computerdetails.entity.Monitor");
 
             UniversalTableModel model = new UniversalTableModel(monitors, clazz);
             monitorTable = new JTable(model);
 
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            System.err.println("Class was not found.");
         }
     }
 }

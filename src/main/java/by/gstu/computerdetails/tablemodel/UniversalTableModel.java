@@ -7,12 +7,14 @@ import java.util.List;
 
 public class UniversalTableModel extends AbstractTableModel {
 
-    private List data;
+    private List<? extends BaseEntity> data;
     private List<String> headers;
+    private Class clazz;
 
     public UniversalTableModel(List<? extends BaseEntity> entities, Class clazz) {
         super();
         this.data = entities;
+        this.clazz = clazz;
         headers = TableModelUtil.getTableHeadersByClass(clazz);
     }
 
@@ -20,7 +22,7 @@ public class UniversalTableModel extends AbstractTableModel {
         return data;
     }
 
-    public void setData(List data) {
+    public void setData(List<? extends BaseEntity> data) {
         this.data = data;
     }
 
@@ -33,6 +35,8 @@ public class UniversalTableModel extends AbstractTableModel {
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
+        BaseEntity baseEntity = data.get(rowIndex);
+
         return "test";
     }
 
