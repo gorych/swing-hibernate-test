@@ -23,11 +23,23 @@ public class HibernateUtil {
         return sessionFactory;
     }
 
-    public static Session getSession(){
+    public static Session getSession() {
         return sessionFactory.getCurrentSession();
     }
 
-    public static void close() {
+    public static void beginTransaction() {
+        getSession().getTransaction().begin();
+    }
+
+    public static void commitTransaction() {
+        getSession().getTransaction().commit();
+    }
+
+    public static void rollbackTransaction() {
+        getSession().getTransaction().rollback();
+    }
+
+    public static void closeSessionFactory() {
         sessionFactory.close();
     }
 
