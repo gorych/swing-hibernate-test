@@ -4,7 +4,7 @@ import by.gstu.computerdetails.config.FormConfig;
 import by.gstu.computerdetails.dao.MonitorDao;
 import by.gstu.computerdetails.dao.impl.MonitorDaoImpl;
 import by.gstu.computerdetails.entity.Monitor;
-import by.gstu.computerdetails.model.UniversalTableModel;
+import by.gstu.computerdetails.tablemodel.UniversalTableModel;
 
 import javax.swing.*;
 import java.util.List;
@@ -33,12 +33,13 @@ public class MainForm {
     }
 
     private void createUIComponents() {
-        List<Monitor> monitors = monitorDao.findAll();
-        UniversalTableModel<Monitor> model = new UniversalTableModel<Monitor>(monitors);
-
-        monitorTable = new JTable(model);
         try {
+            List<Monitor> monitors = monitorDao.findAll();
             Class<?> clazz = Class.forName("by.gstu.computerdetails.entity.Monitor");
+
+            UniversalTableModel model = new UniversalTableModel(monitors, clazz);
+            monitorTable = new JTable(model);
+
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

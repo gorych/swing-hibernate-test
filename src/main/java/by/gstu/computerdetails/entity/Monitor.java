@@ -54,7 +54,7 @@ public class Monitor extends BaseEntity implements Serializable {
         this.diagonal = diagonal;
     }
 
-    @TableColumn(name = "Гарантийный период, мес")
+    @TableColumn(name = "Гарант. период, мес")
     public int getGuaranteePeriod() {
         return guaranteePeriod;
     }
