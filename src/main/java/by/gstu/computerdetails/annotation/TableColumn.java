@@ -9,4 +9,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface TableColumn {
     String name() default "UnnamedColumn";
+
+    int index();
 }

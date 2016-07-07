@@ -12,7 +12,7 @@ public class TableModelUtil {
     public static List<String> getTableHeadersByClass(Class clazz) {
         List<String> headers = new ArrayList<String>();
 
-        Method[] methods = clazz.getMethods();
+        Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
             Annotation[] annotations = method.getDeclaredAnnotations();
 
