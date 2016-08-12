@@ -5,16 +5,15 @@ import by.gstu.computerdetails.entity.BaseEntity;
 
 import javax.swing.table.AbstractTableModel;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
-public class UniversalTableModel extends AbstractTableModel {
+public class UniversalTableModel<T extends BaseEntity> extends AbstractTableModel {
 
-    private List<? extends BaseEntity> data;
+    private List<T> data;
     private List<String> headers;
 
-    public UniversalTableModel(List<? extends BaseEntity> entities, Class clazz) {
+    public UniversalTableModel(List<T> entities, Class<T> clazz) {
         super();
         this.data = entities;
         headers = TableModelUtil.getTableHeadersByClass(clazz);
@@ -24,7 +23,7 @@ public class UniversalTableModel extends AbstractTableModel {
         return data;
     }
 
-    public void setData(List<? extends BaseEntity> data) {
+    public void setData(List<T> data) {
         this.data = data;
     }
 
@@ -51,9 +50,7 @@ public class UniversalTableModel extends AbstractTableModel {
                     if (tableColumn.index() == columnIndex) {
                         try {
                             return method.invoke(data.get(rowIndex), null);
-                        } catch (InvocationTargetException e) {
-                            e.printStackTrace();
-                        } catch (IllegalAccessException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
