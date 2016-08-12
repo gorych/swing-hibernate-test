@@ -27,6 +27,17 @@ public class Monitor extends BaseEntity implements Serializable {
     @JoinColumn(name = "screen_resolution_id")
     private ScreenResolution screenResolution;
 
+    public Monitor() {
+    }
+
+    public Monitor(String name, BigDecimal price, double diagonal, int guaranteePeriod, ScreenResolution screenResolution) {
+        this.name = name;
+        this.price = price;
+        this.diagonal = diagonal;
+        this.guaranteePeriod = guaranteePeriod;
+        this.screenResolution = screenResolution;
+    }
+
     @TableColumn(name = "Наименование", index = 0)
     public String getName() {
         return name;
@@ -65,7 +76,7 @@ public class Monitor extends BaseEntity implements Serializable {
 
     @TableColumn(name = "Разрешение", index = 4)
     public String getFormatScreenResolution() {
-        return screenResolution.getX() + " x " + screenResolution.getY();
+        return screenResolution.toString();
     }
 
     public ScreenResolution getScreenResolution() {

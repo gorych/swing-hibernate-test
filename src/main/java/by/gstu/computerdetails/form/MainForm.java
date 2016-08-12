@@ -7,14 +7,13 @@ import by.gstu.computerdetails.dao.impl.MonitorDaoImpl;
 import by.gstu.computerdetails.dao.impl.ScreenResolutionDaoImpl;
 import by.gstu.computerdetails.entity.Monitor;
 import by.gstu.computerdetails.entity.ScreenResolution;
+import by.gstu.computerdetails.form.helper.FormHelper;
 import by.gstu.computerdetails.listeners.ChangeTabListener;
 import by.gstu.computerdetails.tablemodel.UniversalTableModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.util.List;
 
 public class MainForm {
@@ -37,15 +36,14 @@ public class MainForm {
 
     public MainForm() {
         Component mainTab = tabbedPane.getComponent(0);
-        Component monitorTab = tabbedPane.getComponent(1);
+        final Component monitorTab = tabbedPane.getComponent(1);
         Component resolutionTab = tabbedPane.getComponent(2);
 
         monitorTab.addComponentListener(new ChangeTabListener() {
             @Override
             public void componentShown(ComponentEvent e) {
                 List<Monitor> monitors = MONITOR_DAO.findAll();
-                UniversalTableModel<Monitor> model = new UniversalTableModel<Monitor>(monitors, Monitor.class);
-                monitorTable.setModel(model);
+                monitorTable.setModel(new UniversalTableModel<Monitor>(monitors, Monitor.class));
             }
         });
 
@@ -53,29 +51,28 @@ public class MainForm {
             @Override
             public void componentShown(ComponentEvent e) {
                 List<ScreenResolution> resolutions = SCREEN_RESOLUTION_DAO.findAll();
-                UniversalTableModel<ScreenResolution> model = new UniversalTableModel<ScreenResolution>(resolutions, ScreenResolution.class);
-                resolutionTable.setModel(model);
+                resolutionTable.setModel(new UniversalTableModel<ScreenResolution>(resolutions, ScreenResolution.class));
             }
         });
 
         addMonitorBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AddEditMonitorForm addForm = new AddEditMonitorForm("Добавление нового монитора");
-                addForm.setLocationRelativeTo(null);
-                addForm.setVisible(true);
+                FormHelper.showWindow(
+                        new AddEditForm().getRootPanel(),
+                        FormConfig.ADD_MONITOR_FORM_NAME,
+                        FormConfig.ADD_FORM_DEFAULT_WIDTH,
+                        FormConfig.ADD_FORM_DEFAULT_HEIGHT
+                );
             }
         });
     }
 
     public static void main(String[] args) {
-        JFrame root = new JFrame(FormConfig.APP_NAME);
-
-        root.setContentPane(new MainForm().mainPanel);
-        root.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        root.setSize(FormConfig.DEFAULT_WINDOW_WIDTH, FormConfig.DEFAULT_WINDOW_HEIGHT);
-
-        /*Null equals center screen here*/
-        root.setLocationRelativeTo(null);
-        root.setVisible(true);
+        FormHelper.showWindow(
+                new MainForm().mainPanel,
+                FormConfig.APP_NAME,
+                FormConfig.DEFAULT_WINDOW_WIDTH,
+                FormConfig.DEFAULT_WINDOW_HEIGHT
+        );
     }
 }

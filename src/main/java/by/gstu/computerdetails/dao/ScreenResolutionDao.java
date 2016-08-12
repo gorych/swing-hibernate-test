@@ -4,7 +4,7 @@ import by.gstu.computerdetails.entity.ScreenResolution;
 
 import java.util.List;
 
-public interface ScreenResolutionDao {
+public interface ScreenResolutionDao extends GenericDao<ScreenResolution, Long> {
 
     List<ScreenResolution> findAll();
 

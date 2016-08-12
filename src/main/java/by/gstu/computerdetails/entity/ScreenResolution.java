@@ -1,7 +1,6 @@
 package by.gstu.computerdetails.entity;
 
 import by.gstu.computerdetails.annotation.TableColumn;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +16,14 @@ public class ScreenResolution extends BaseEntity implements Serializable {
 
     @Column(nullable = false)
     private int y;
+
+    public ScreenResolution() {
+    }
+
+    public ScreenResolution(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
     @TableColumn(name = "Х", index = 0)
     public int getX() {
@@ -36,19 +43,8 @@ public class ScreenResolution extends BaseEntity implements Serializable {
         this.y = y;
     }
 
-    public ScreenResolution() {
-    }
-
-    public ScreenResolution(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("x", x)
-                .append("y", y)
-                .toString();
+        return x + " x " + y;
     }
 }

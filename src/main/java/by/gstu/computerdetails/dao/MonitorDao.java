@@ -4,7 +4,7 @@ import by.gstu.computerdetails.entity.Monitor;
 
 import java.util.List;
 
-public interface MonitorDao {
+public interface MonitorDao extends GenericDao<Monitor, Long> {
 
     List<Monitor> findAll();
 
