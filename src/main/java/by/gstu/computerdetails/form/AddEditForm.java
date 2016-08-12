@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class AddEditForm {
+public class AddEditForm extends JFrame{
 
     private static final MonitorDao MONITOR_DAO;
     private static final ScreenResolutionDao SCREEN_RESOLUTION_DAO;
@@ -49,6 +49,17 @@ public class AddEditForm {
                 ScreenResolution screenResolution = (ScreenResolution) resolutionCb.getSelectedItem();
 
                 MONITOR_DAO.saveOrUpdate(new Monitor(name, price, diagonal, guarantee, screenResolution));
+
+                int response = JOptionPane.showConfirmDialog(
+                        null,
+                        "Запись успешно сохранена. Хотите добавить еще одну?",
+                        "Успешное добавление",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE
+                );
+
+                if (response == JOptionPane.NO_OPTION || response == JOptionPane.CLOSED_OPTION) {
+
+                }
             }
         });
     }
