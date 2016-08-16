@@ -6,7 +6,7 @@ import by.gstu.computerdetails.entity.Monitor;
 import by.gstu.computerdetails.entity.ScreenResolution;
 import by.gstu.computerdetails.form.helper.FormHelper;
 import by.gstu.computerdetails.listeners.ChangeTabListener;
-import by.gstu.computerdetails.tablemodel.UniversalTableModel;
+import by.gstu.computerdetails.model.UniversalTableModel;
 import org.hibernate.Session;
 
 import javax.swing.*;
@@ -27,6 +27,8 @@ public class MainForm extends AbstractDataForm {
 
     private JTabbedPane tabbedPane;
     private JButton addMonitorBtn;
+    private JButton delMonitorBtn;
+    private JButton editMonitorBtn;
 
     private MainForm() {
         Component mainTab = tabbedPane.getComponent(0);
@@ -57,6 +59,17 @@ public class MainForm extends AbstractDataForm {
                         FormConfig.ADD_FORM_DEFAULT_WIDTH,
                         FormConfig.ADD_FORM_DEFAULT_HEIGHT
                 );
+            }
+        });
+
+        delMonitorBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int selectedRowCount = monitorTable.getSelectedRowCount();
+                if (selectedRowCount > 0) {
+                    int selectedRows = monitorTable.getSelectedRows()[0];
+                } else {
+                    FormHelper.showWarning("Не выбрана запись для редактирования", "Предупреждение");
+                }
             }
         });
     }

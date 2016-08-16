@@ -1,6 +1,8 @@
 package by.gstu.computerdetails.entity;
 
 import by.gstu.computerdetails.annotation.TableColumn;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,6 +43,28 @@ public class ScreenResolution extends BaseEntity implements Serializable {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ScreenResolution that = (ScreenResolution) o;
+
+        return new EqualsBuilder()
+                .append(x, that.x)
+                .append(y, that.y)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(x)
+                .append(y)
+                .toHashCode();
     }
 
     @Override
