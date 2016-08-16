@@ -2,10 +2,6 @@ package by.gstu.computerdetails.form;
 
 import by.gstu.computerdetails.config.FormConfig;
 import by.gstu.computerdetails.config.HibernateUtil;
-import by.gstu.computerdetails.dao.MonitorDao;
-import by.gstu.computerdetails.dao.ScreenResolutionDao;
-import by.gstu.computerdetails.dao.impl.MonitorDaoImpl;
-import by.gstu.computerdetails.dao.impl.ScreenResolutionDaoImpl;
 import by.gstu.computerdetails.entity.Monitor;
 import by.gstu.computerdetails.entity.ScreenResolution;
 import by.gstu.computerdetails.form.helper.FormHelper;
@@ -15,18 +11,14 @@ import org.hibernate.Session;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.util.List;
 
-public class MainForm extends JFrame {
+public class MainForm extends AbstractDataForm {
 
-    private static final MonitorDao MONITOR_DAO;
-    private static final ScreenResolutionDao SCREEN_RESOLUTION_DAO;
-
-    static {
-        MONITOR_DAO = new MonitorDaoImpl();
-        SCREEN_RESOLUTION_DAO = new ScreenResolutionDaoImpl();
-    }
+    private static MainForm instance;
 
     private JPanel mainPanel;
 
@@ -36,24 +28,10 @@ public class MainForm extends JFrame {
     private JTabbedPane tabbedPane;
     private JButton addMonitorBtn;
 
-    public MainForm() {
+    private MainForm() {
         Component mainTab = tabbedPane.getComponent(0);
         Component monitorTab = tabbedPane.getComponent(1);
         Component resolutionTab = tabbedPane.getComponent(2);
-
-        mainPanel.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentShown(ComponentEvent e) {
-                System.out.println("shown");
-            }
-        });
-
-        mainPanel.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                System.out.println("gain");
-            }
-        });
 
         monitorTab.addComponentListener(new ChangeTabListener() {
             @Override
@@ -83,9 +61,13 @@ public class MainForm extends JFrame {
         });
     }
 
+    public static MainForm GET_INSTANCE() {
+        return instance == null ? new MainForm() : instance;
+    }
+
     public static void main(String[] args) {
         FormHelper.showWindow(
-                new MainForm().mainPanel,
+                GET_INSTANCE().mainPanel,
                 FormConfig.APP_NAME,
                 FormConfig.DEFAULT_WINDOW_WIDTH,
                 FormConfig.DEFAULT_WINDOW_HEIGHT
@@ -94,9 +76,21 @@ public class MainForm extends JFrame {
         /*Get session at the opening of the main window*/
         Session session = HibernateUtil.getSession();
 
-        /*Close program if session not created*/
+        /*Exit program if session not created*/
         if (session == null) {
             System.exit(0);
         }
+    }
+
+    public JPanel getMainPanel() {
+        return mainPanel;
+    }
+
+    public JTable getMonitorTable() {
+        return monitorTable;
+    }
+
+    public JTable getResolutionTable() {
+        return resolutionTable;
     }
 }

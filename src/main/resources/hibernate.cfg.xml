@@ -12,6 +12,7 @@
         <property name="connection.username">admin</property>
         <property name="connection.password">admin</property>
 
+        <!--Change it to 'create' if DB not exists-->
         <property name="hbm2ddl.auto">validate</property>
         <property name="hibernate.current_session_context_class">thread</property>
 

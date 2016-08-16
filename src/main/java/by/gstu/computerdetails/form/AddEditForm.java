@@ -1,9 +1,5 @@
 package by.gstu.computerdetails.form;
 
-import by.gstu.computerdetails.dao.MonitorDao;
-import by.gstu.computerdetails.dao.ScreenResolutionDao;
-import by.gstu.computerdetails.dao.impl.MonitorDaoImpl;
-import by.gstu.computerdetails.dao.impl.ScreenResolutionDaoImpl;
 import by.gstu.computerdetails.entity.Monitor;
 import by.gstu.computerdetails.entity.ScreenResolution;
 
@@ -14,15 +10,7 @@ import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class AddEditForm extends JFrame {
-
-    private static final MonitorDao MONITOR_DAO;
-    private static final ScreenResolutionDao SCREEN_RESOLUTION_DAO;
-
-    static {
-        MONITOR_DAO = new MonitorDaoImpl();
-        SCREEN_RESOLUTION_DAO = new ScreenResolutionDaoImpl();
-    }
+public class AddEditForm extends AbstractDataForm {
 
     private JPanel rootPanel;
 

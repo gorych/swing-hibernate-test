@@ -1,6 +1,10 @@
 package by.gstu.computerdetails.form.helper;
 
+import by.gstu.computerdetails.config.FormConfig;
+
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class FormHelper {
 
@@ -16,6 +20,16 @@ public class FormHelper {
 
         root.setLocationRelativeTo(null);
         root.setVisible(true);
+
+        root.addWindowFocusListener(new WindowAdapter() {
+            @Override
+            public void windowGainedFocus(WindowEvent e) {
+                JFrame frame = (JFrame) e.getComponent();
+                if (frame != null && FormConfig.APP_NAME.equals(frame.getTitle())) {
+
+                }
+            }
+        });
 
         return root;
     }

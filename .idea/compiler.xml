@@ -22,11 +22,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="computerdetails" />
+        <module name="computer-details-monitor" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="computerdetails" target="1.5" />
+      <module name="computer-details-monitor" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
