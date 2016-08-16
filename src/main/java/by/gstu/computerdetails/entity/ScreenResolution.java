@@ -3,15 +3,19 @@ package by.gstu.computerdetails.entity;
 import by.gstu.computerdetails.annotation.TableColumn;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table
 public class ScreenResolution extends BaseEntity implements Serializable {
+
+    @Id
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
+    private long id;
 
     @Column(nullable = false)
     private int x;
@@ -27,7 +31,16 @@ public class ScreenResolution extends BaseEntity implements Serializable {
         this.y = y;
     }
 
-    @TableColumn(name = "Х", index = 0)
+    @TableColumn(name = "ID", index = 0, hidden = true)
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @TableColumn(name = "Х", index = 1)
     public int getX() {
         return x;
     }
@@ -36,7 +49,7 @@ public class ScreenResolution extends BaseEntity implements Serializable {
         this.x = x;
     }
 
-    @TableColumn(name = "У", index = 1)
+    @TableColumn(name = "У", index = 2)
     public int getY() {
         return y;
     }

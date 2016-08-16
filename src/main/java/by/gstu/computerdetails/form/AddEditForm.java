@@ -2,6 +2,7 @@ package by.gstu.computerdetails.form;
 
 import by.gstu.computerdetails.entity.Monitor;
 import by.gstu.computerdetails.entity.ScreenResolution;
+import by.gstu.computerdetails.form.helper.FormHelper;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,20 +41,13 @@ public class AddEditForm extends AbstractDataForm {
 
                     MONITOR_DAO.saveOrUpdate(new Monitor(name, price, diagonal, guarantee, screenResolution));
                 } catch (RuntimeException exc) {
-                    JOptionPane.showConfirmDialog(
-                            null,
-                            "Значения полей введены некорректно. Попробуйте еще раз.",
-                            "Некорректный ввод",
-                            JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE
-                    );
+                    FormHelper.showError("Значения полей введены некорректно. Попробуйте еще раз.", "Некорректный ввод");
                     return;
                 }
 
-                int success = JOptionPane.showConfirmDialog(
-                        null,
+                int success = FormHelper.showConfirm(
                         "Запись успешно сохранена. Хотите добавить еще одну?",
-                        "Успешное добавление",
-                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE
+                        "Успешное добавление"
                 );
 
                 if (success == JOptionPane.NO_OPTION || success == JOptionPane.CLOSED_OPTION) {

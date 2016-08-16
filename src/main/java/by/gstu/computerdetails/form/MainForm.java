@@ -6,6 +6,7 @@ import by.gstu.computerdetails.entity.Monitor;
 import by.gstu.computerdetails.entity.ScreenResolution;
 import by.gstu.computerdetails.form.helper.FormHelper;
 import by.gstu.computerdetails.listeners.ChangeTabListener;
+import by.gstu.computerdetails.model.TableModelUtil;
 import by.gstu.computerdetails.model.UniversalTableModel;
 import org.hibernate.Session;
 
@@ -32,7 +33,7 @@ public class MainForm extends AbstractDataForm {
 
     private MainForm() {
         Component mainTab = tabbedPane.getComponent(0);
-        Component monitorTab = tabbedPane.getComponent(1);
+        final Component monitorTab = tabbedPane.getComponent(1);
         Component resolutionTab = tabbedPane.getComponent(2);
 
         monitorTab.addComponentListener(new ChangeTabListener() {
@@ -40,6 +41,8 @@ public class MainForm extends AbstractDataForm {
             public void componentShown(ComponentEvent e) {
                 List<Monitor> monitors = MONITOR_DAO.findAll();
                 monitorTable.setModel(new UniversalTableModel<Monitor>(monitors, Monitor.class));
+
+                hideTableColumn(monitorTable, 0);
             }
         });
 
@@ -48,6 +51,8 @@ public class MainForm extends AbstractDataForm {
             public void componentShown(ComponentEvent e) {
                 List<ScreenResolution> resolutions = SCREEN_RESOLUTION_DAO.findAll();
                 resolutionTable.setModel(new UniversalTableModel<ScreenResolution>(resolutions, ScreenResolution.class));
+
+                hideTableColumn(resolutionTable, 0);
             }
         });
 
@@ -72,6 +77,9 @@ public class MainForm extends AbstractDataForm {
                 }
             }
         });
+
+        List<Integer> monitorHiddenColumns = TableModelUtil.getHiddenColumnIndexes(Monitor.class);
+        List<Integer> resolutionHiddenColumns = TableModelUtil.getHiddenColumnIndexes(ScreenResolution.class);
     }
 
     public static MainForm GET_INSTANCE() {

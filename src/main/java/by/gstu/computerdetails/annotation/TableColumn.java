@@ -11,4 +11,6 @@ public @interface TableColumn {
     String name() default "UnnamedColumn";
 
     int index();
+
+    boolean hidden() default false;
 }
