@@ -1,4 +1,4 @@
-package by.gstu.computerdetails.tablemodel;
+package by.gstu.computerdetails.model;
 
 import by.gstu.computerdetails.annotation.TableColumn;
 import by.gstu.computerdetails.entity.BaseEntity;
@@ -7,11 +7,12 @@ import javax.swing.table.AbstractTableModel;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 
 public class UniversalTableModel<T extends BaseEntity> extends AbstractTableModel {
 
     private List<T> data;
-    private List<String> headers;
+    private Map<Integer, String> headers;
 
     public UniversalTableModel(List<T> entities, Class<T> clazz) {
         super();

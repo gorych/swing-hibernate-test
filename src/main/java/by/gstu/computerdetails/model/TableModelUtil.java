@@ -1,16 +1,16 @@
-package by.gstu.computerdetails.tablemodel;
+package by.gstu.computerdetails.model;
 
 import by.gstu.computerdetails.annotation.TableColumn;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TableModelUtil {
 
-    public static List<String> getTableHeadersByClass(Class clazz) {
-        List<String> headers = new ArrayList<String>();
+    public static Map<Integer, String> getTableHeadersByClass(Class clazz) {
+        Map<Integer, String> headers = new HashMap<Integer, String>();
 
         Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
@@ -19,7 +19,7 @@ public class TableModelUtil {
             for (Annotation annotation : annotations) {
                 if (annotation instanceof TableColumn) {
                     TableColumn tableColumn = (TableColumn) annotation;
-                    headers.add(tableColumn.name());
+                    headers.put(tableColumn.index(), tableColumn.name());
                 }
             }
         }
