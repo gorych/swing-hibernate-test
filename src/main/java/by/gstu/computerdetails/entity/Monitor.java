@@ -1,6 +1,7 @@
 package by.gstu.computerdetails.entity;
 
 import by.gstu.computerdetails.annotation.TableColumn;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
@@ -31,10 +32,10 @@ public class Monitor extends BaseEntity implements Serializable {
     }
 
     public Monitor(String name, BigDecimal price, double diagonal, int guaranteePeriod, ScreenResolution screenResolution) {
-        this.name = name;
-        this.price = price;
-        this.diagonal = diagonal;
-        this.guaranteePeriod = guaranteePeriod;
+        setName(name);
+        setPrice(price);
+        setDiagonal(diagonal);
+        setGuaranteePeriod(guaranteePeriod);
         this.screenResolution = screenResolution;
     }
 
@@ -44,6 +45,9 @@ public class Monitor extends BaseEntity implements Serializable {
     }
 
     public void setName(String name) {
+        if (StringUtils.isEmpty(name)) {
+            throw new IllegalArgumentException("Monitor name= " + name + " is incorrect.");
+        }
         this.name = name;
     }
 
@@ -53,6 +57,10 @@ public class Monitor extends BaseEntity implements Serializable {
     }
 
     public void setPrice(BigDecimal price) {
+        long intPrice = price.longValue();
+        if (intPrice < 0) {
+            throw new IllegalArgumentException("Price less than zero.");
+        }
         this.price = price;
     }
 
@@ -62,6 +70,9 @@ public class Monitor extends BaseEntity implements Serializable {
     }
 
     public void setDiagonal(double diagonal) {
+        if (diagonal < 0) {
+            throw new IllegalArgumentException("Diagonal less than zero.");
+        }
         this.diagonal = diagonal;
     }
 
@@ -71,6 +82,9 @@ public class Monitor extends BaseEntity implements Serializable {
     }
 
     public void setGuaranteePeriod(int guaranteePeriod) {
+        if (guaranteePeriod < 0) {
+            throw new IllegalArgumentException("Guarantee period less than zero.");
+        }
         this.guaranteePeriod = guaranteePeriod;
     }
 

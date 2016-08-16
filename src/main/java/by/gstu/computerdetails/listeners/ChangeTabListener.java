@@ -14,7 +14,7 @@ public class ChangeTabListener implements ComponentListener {
     }
 
     public void componentShown(ComponentEvent e) {
-
+        //do nothing
     }
 
     public void componentHidden(ComponentEvent e) {

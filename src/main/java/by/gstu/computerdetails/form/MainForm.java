@@ -1,6 +1,7 @@
 package by.gstu.computerdetails.form;
 
 import by.gstu.computerdetails.config.FormConfig;
+import by.gstu.computerdetails.config.HibernateUtil;
 import by.gstu.computerdetails.dao.MonitorDao;
 import by.gstu.computerdetails.dao.ScreenResolutionDao;
 import by.gstu.computerdetails.dao.impl.MonitorDaoImpl;
@@ -10,13 +11,14 @@ import by.gstu.computerdetails.entity.ScreenResolution;
 import by.gstu.computerdetails.form.helper.FormHelper;
 import by.gstu.computerdetails.listeners.ChangeTabListener;
 import by.gstu.computerdetails.tablemodel.UniversalTableModel;
+import org.hibernate.Session;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
 
-public class MainForm {
+public class MainForm extends JFrame {
 
     private static final MonitorDao MONITOR_DAO;
     private static final ScreenResolutionDao SCREEN_RESOLUTION_DAO;
@@ -36,8 +38,22 @@ public class MainForm {
 
     public MainForm() {
         Component mainTab = tabbedPane.getComponent(0);
-        final Component monitorTab = tabbedPane.getComponent(1);
+        Component monitorTab = tabbedPane.getComponent(1);
         Component resolutionTab = tabbedPane.getComponent(2);
+
+        mainPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                System.out.println("shown");
+            }
+        });
+
+        mainPanel.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                System.out.println("gain");
+            }
+        });
 
         monitorTab.addComponentListener(new ChangeTabListener() {
             @Override
@@ -74,5 +90,13 @@ public class MainForm {
                 FormConfig.DEFAULT_WINDOW_WIDTH,
                 FormConfig.DEFAULT_WINDOW_HEIGHT
         );
+
+        /*Get session at the opening of the main window*/
+        Session session = HibernateUtil.getSession();
+
+        /*Close program if session not created*/
+        if (session == null) {
+            System.exit(0);
+        }
     }
 }
