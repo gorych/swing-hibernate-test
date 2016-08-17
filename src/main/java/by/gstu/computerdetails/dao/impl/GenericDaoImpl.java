@@ -42,6 +42,15 @@ public abstract class GenericDaoImpl<E, K extends Serializable> implements Gener
         HibernateUtil.commitTransaction();
     }
 
+    public void remove(K[] ids) {
+        HibernateUtil.beginTransaction();
+        for (K id : ids) {
+            E entity = find(id);
+            remove(entity);
+        }
+        HibernateUtil.commitTransaction();
+    }
+
     public E find(K key) {
         HibernateUtil.beginTransaction();
         E entity = getSession().get(daoType, key);

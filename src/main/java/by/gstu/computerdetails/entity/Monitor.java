@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table
-public class Monitor extends BaseEntity implements Serializable {
+public class Monitor extends BaseEntity {
 
     @Id
     @GeneratedValue(generator = "increment")
@@ -32,7 +32,7 @@ public class Monitor extends BaseEntity implements Serializable {
     @Column(nullable = false, name = "guarantee_period")
     private int guaranteePeriod;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "screen_resolution_id")
     private ScreenResolution screenResolution;
 

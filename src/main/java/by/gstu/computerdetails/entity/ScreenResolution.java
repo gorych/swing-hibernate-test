@@ -6,11 +6,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table
-public class ScreenResolution extends BaseEntity implements Serializable {
+public class ScreenResolution extends BaseEntity {
 
     @Id
     @GeneratedValue(generator = "increment")

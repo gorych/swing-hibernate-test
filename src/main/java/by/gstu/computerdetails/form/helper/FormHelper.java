@@ -34,6 +34,10 @@ public class FormHelper {
         return root;
     }
 
+    public static int showInfo(String msg, String caption) {
+        return JOptionPane.showConfirmDialog(null, msg, caption, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+    }
+
     public static int showWarning(String msg, String caption) {
         return JOptionPane.showConfirmDialog(null, msg, caption, JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
     }

@@ -66,7 +66,7 @@
                       <text value="Добавить"/>
                     </properties>
                   </component>
-                  <component id="48576" class="javax.swing.JButton" binding="delMonitorBtn">
+                  <component id="48576" class="javax.swing.JButton" binding="editMonitorBtn">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -74,7 +74,7 @@
                       <text value="Изменить"/>
                     </properties>
                   </component>
-                  <component id="23bf3" class="javax.swing.JButton" binding="editMonitorBtn">
+                  <component id="23bf3" class="javax.swing.JButton" binding="delMonitorBtn">
                     <constraints>
                       <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>

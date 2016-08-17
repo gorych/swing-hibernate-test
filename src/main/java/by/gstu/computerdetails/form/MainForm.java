@@ -33,26 +33,20 @@ public class MainForm extends AbstractDataForm {
 
     private MainForm() {
         Component mainTab = tabbedPane.getComponent(0);
-        final Component monitorTab = tabbedPane.getComponent(1);
-        Component resolutionTab = tabbedPane.getComponent(2);
+        Component monitorTab = tabbedPane.getComponent(1);
+        final Component resolutionTab = tabbedPane.getComponent(2);
 
         monitorTab.addComponentListener(new ChangeTabListener() {
             @Override
             public void componentShown(ComponentEvent e) {
-                List<Monitor> monitors = MONITOR_DAO.findAll();
-                monitorTable.setModel(new UniversalTableModel<Monitor>(monitors, Monitor.class));
-
-                hideTableColumn(monitorTable, 0);
+                updateMonitorTable();
             }
         });
 
         resolutionTab.addComponentListener(new ChangeTabListener() {
             @Override
             public void componentShown(ComponentEvent e) {
-                List<ScreenResolution> resolutions = SCREEN_RESOLUTION_DAO.findAll();
-                resolutionTable.setModel(new UniversalTableModel<ScreenResolution>(resolutions, ScreenResolution.class));
-
-                hideTableColumn(resolutionTable, 0);
+                updateResolutionTable();
             }
         });
 
@@ -71,15 +65,26 @@ public class MainForm extends AbstractDataForm {
             public void actionPerformed(ActionEvent e) {
                 int selectedRowCount = monitorTable.getSelectedRowCount();
                 if (selectedRowCount > 0) {
-                    int selectedRows = monitorTable.getSelectedRows()[0];
-                } else {
-                    FormHelper.showWarning("Не выбрана запись для редактирования", "Предупреждение");
+                    int[] selectedRows = monitorTable.getSelectedRows();
+                    int colIndex = TableModelUtil.findIdColumn(monitorTable);
+
+                    for (int selectedRow : selectedRows) {
+                        Long id = (Long) monitorTable.getValueAt(selectedRow, colIndex);
+                        try {
+                            Monitor monitor = MONITOR_DAO.find(id);
+                            MONITOR_DAO.remove(monitor);
+                        } catch (RuntimeException exc) {
+                            //do nothing
+                            FormHelper.showError("Ошибка при выполении операции", "Ошибка удаления");
+                            return;
+                        }
+                    }
+
+                    FormHelper.showInfo("Операция удаления выполнена успешно", "Успешное удаление");
+                    updateMonitorTable();
                 }
             }
         });
-
-        List<Integer> monitorHiddenColumns = TableModelUtil.getHiddenColumnIndexes(Monitor.class);
-        List<Integer> resolutionHiddenColumns = TableModelUtil.getHiddenColumnIndexes(ScreenResolution.class);
     }
 
     public static MainForm GET_INSTANCE() {
@@ -103,15 +108,16 @@ public class MainForm extends AbstractDataForm {
         }
     }
 
-    public JPanel getMainPanel() {
-        return mainPanel;
+    private void updateResolutionTable() {
+        List<ScreenResolution> resolutions = SCREEN_RESOLUTION_DAO.findAll();
+        resolutionTable.setModel(new UniversalTableModel<ScreenResolution>(resolutions, ScreenResolution.class));
+        TableModelUtil.hideIdColumns(resolutionTable);
     }
 
-    public JTable getMonitorTable() {
-        return monitorTable;
+    private void updateMonitorTable() {
+        List<Monitor> monitors = MONITOR_DAO.findAll();
+        monitorTable.setModel(new UniversalTableModel<Monitor>(monitors, Monitor.class));
+        TableModelUtil.hideIdColumns(monitorTable);
     }
 
-    public JTable getResolutionTable() {
-        return resolutionTable;
-    }
 }

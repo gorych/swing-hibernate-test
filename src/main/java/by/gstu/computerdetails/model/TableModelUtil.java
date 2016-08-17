@@ -2,11 +2,12 @@ package by.gstu.computerdetails.model;
 
 import by.gstu.computerdetails.annotation.TableColumn;
 
+import javax.swing.*;
+import javax.swing.table.TableColumnModel;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TableModelUtil {
@@ -29,24 +30,31 @@ public class TableModelUtil {
         return headers;
     }
 
-    public static List<Integer> getHiddenColumnIndexes(Class clazz) {
-        List<Integer> indexes = new ArrayList<Integer>();
-
-        Method[] methods = clazz.getDeclaredMethods();
-        for (Method method : methods) {
-            Annotation[] annotations = method.getDeclaredAnnotations();
-
-            for (Annotation annotation : annotations) {
-                if (annotation instanceof TableColumn) {
-                    TableColumn tableColumn = (TableColumn) annotation;
-                    if (tableColumn.hidden()) {
-                        indexes.add(tableColumn.index());
-                    }
-                }
+    public static int findIdColumn(JTable table) {
+        TableColumnModel columnModel = table.getColumnModel();
+        Enumeration<javax.swing.table.TableColumn> columns = columnModel.getColumns();
+        while (columns.hasMoreElements()) {
+            javax.swing.table.TableColumn column = columns.nextElement();
+            String colName = ((String) column.getHeaderValue()).toUpperCase();
+            if ("ID".equals(colName)) {
+                return column.getModelIndex();
             }
         }
+        return -1;
+    }
 
-        return indexes;
+    public static void hideIdColumns(JTable table) {
+        TableColumnModel columnModel = table.getColumnModel();
+        Enumeration<javax.swing.table.TableColumn> columns = columnModel.getColumns();
+        while (columns.hasMoreElements()) {
+            javax.swing.table.TableColumn column = columns.nextElement();
+            String colName = ((String) column.getHeaderValue()).toUpperCase();
+            if ("ID".equals(colName)) {
+                column.setMaxWidth(0);
+                column.setMinWidth(0);
+                column.setPreferredWidth(0);
+            }
+        }
     }
 
 }
