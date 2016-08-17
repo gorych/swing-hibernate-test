@@ -1,6 +1,7 @@
 package by.gstu.computerdetails.entity;
 
 import by.gstu.computerdetails.annotation.TableColumn;
+import com.sun.istack.internal.NotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -8,7 +9,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
@@ -32,6 +32,7 @@ public class Monitor extends BaseEntity {
     @Column(nullable = false, name = "guarantee_period")
     private int guaranteePeriod;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "screen_resolution_id")
     private ScreenResolution screenResolution;
@@ -44,7 +45,7 @@ public class Monitor extends BaseEntity {
         setPrice(price);
         setDiagonal(diagonal);
         setGuaranteePeriod(guaranteePeriod);
-        this.screenResolution = screenResolution;
+        setScreenResolution(screenResolution);
     }
 
     @TableColumn(name = "ID", index = 0, hidden = true)
@@ -115,6 +116,9 @@ public class Monitor extends BaseEntity {
     }
 
     public void setScreenResolution(ScreenResolution screenResolution) {
+        if (screenResolution == null) {
+            throw new IllegalArgumentException("Screen resolution is null.");
+        }
         this.screenResolution = screenResolution;
     }
 

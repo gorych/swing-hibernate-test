@@ -160,7 +160,7 @@ public class MainForm extends AbstractDataForm {
                     }
 
                     FormHelper.showInfo("Операция удаления выполнена успешно", "Успешное удаление");
-                    updateResolutionTable();
+                    updateTables();
                 }
             }
         });

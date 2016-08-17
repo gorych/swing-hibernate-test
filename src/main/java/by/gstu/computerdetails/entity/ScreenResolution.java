@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -21,6 +23,9 @@ public class ScreenResolution extends BaseEntity {
 
     @Column(nullable = false)
     private int y;
+
+    @OneToMany(mappedBy = "screenResolution", cascade = CascadeType.ALL)
+    private List<Monitor> monitors = new ArrayList<Monitor>();
 
     public ScreenResolution() {
     }
@@ -55,6 +60,14 @@ public class ScreenResolution extends BaseEntity {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public List<Monitor> getMonitors() {
+        return monitors;
+    }
+
+    public void setMonitors(List<Monitor> monitors) {
+        this.monitors = monitors;
     }
 
     @Override
