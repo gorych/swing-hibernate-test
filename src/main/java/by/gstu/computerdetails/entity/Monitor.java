@@ -74,7 +74,7 @@ public class Monitor extends BaseEntity {
     }
 
     public void setPrice(BigDecimal price) {
-        long intPrice = price.longValue();
+        double intPrice = price.doubleValue();
         if (intPrice < 0) {
             throw new IllegalArgumentException("Price less than zero.");
         }

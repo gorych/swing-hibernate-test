@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MainForm extends AbstractDataForm {
 
-    private static MainForm instance;
+    private static MainForm instance = new MainForm();
 
     private JPanel mainPanel;
 
@@ -28,8 +28,8 @@ public class MainForm extends AbstractDataForm {
 
     private JTabbedPane tabbedPane;
     private JButton addMonitorBtn;
-    private JButton delMonitorBtn;
     private JButton editMonitorBtn;
+    private JButton delMonitorBtn;
 
     private MainForm() {
         Component mainTab = tabbedPane.getComponent(0);
@@ -53,7 +53,7 @@ public class MainForm extends AbstractDataForm {
         addMonitorBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 FormHelper.showWindow(
-                        new AddEditForm().getRootPanel(),
+                        new AddEditMonitorForm(null).getRootPanel(),
                         FormConfig.ADD_MONITOR_FORM_NAME,
                         FormConfig.ADD_FORM_DEFAULT_WIDTH,
                         FormConfig.ADD_FORM_DEFAULT_HEIGHT
@@ -61,9 +61,30 @@ public class MainForm extends AbstractDataForm {
             }
         });
 
+        editMonitorBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int selectedRowCount = monitorTable.getSelectedRowCount();
+                if (selectedRowCount > 0) {
+                    int selectedRow = monitorTable.getSelectedRows()[0];
+                    int colIndex = TableModelUtil.findIdColumn(monitorTable);
+
+                    Long id = (Long) monitorTable.getValueAt(selectedRow, colIndex);
+                    Monitor monitor = MONITOR_DAO.find(id);
+
+                    FormHelper.showWindow(
+                            new AddEditMonitorForm(monitor).getRootPanel(),
+                            FormConfig.ADD_MONITOR_FORM_NAME,
+                            FormConfig.ADD_FORM_DEFAULT_WIDTH,
+                            FormConfig.ADD_FORM_DEFAULT_HEIGHT
+                    );
+                }
+            }
+        });
+
         delMonitorBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int selectedRowCount = monitorTable.getSelectedRowCount();
+
                 if (selectedRowCount > 0) {
                     int[] selectedRows = monitorTable.getSelectedRows();
                     int colIndex = TableModelUtil.findIdColumn(monitorTable);
@@ -74,7 +95,6 @@ public class MainForm extends AbstractDataForm {
                             Monitor monitor = MONITOR_DAO.find(id);
                             MONITOR_DAO.remove(monitor);
                         } catch (RuntimeException exc) {
-                            //do nothing
                             FormHelper.showError("Ошибка при выполении операции", "Ошибка удаления");
                             return;
                         }
@@ -88,7 +108,7 @@ public class MainForm extends AbstractDataForm {
     }
 
     public static MainForm GET_INSTANCE() {
-        return instance == null ? new MainForm() : instance;
+        return instance;
     }
 
     public static void main(String[] args) {
@@ -120,4 +140,8 @@ public class MainForm extends AbstractDataForm {
         TableModelUtil.hideIdColumns(monitorTable);
     }
 
+    public void updateTables() {
+        updateMonitorTable();
+        updateResolutionTable();
+    }
 }
