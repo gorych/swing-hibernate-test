@@ -30,6 +30,9 @@ public class MainForm extends AbstractDataForm {
     private JButton addMonitorBtn;
     private JButton editMonitorBtn;
     private JButton delMonitorBtn;
+    private JButton addResolutionBtn;
+    private JButton editResolutionBtn;
+    private JButton delResolutionBtn;
 
     private MainForm() {
         Component mainTab = tabbedPane.getComponent(0);
@@ -73,7 +76,7 @@ public class MainForm extends AbstractDataForm {
 
                     FormHelper.showWindow(
                             new AddEditMonitorForm(monitor).getRootPanel(),
-                            FormConfig.ADD_MONITOR_FORM_NAME,
+                            FormConfig.EDIT_MONITOR_FORM_NAME,
                             FormConfig.ADD_FORM_DEFAULT_WIDTH,
                             FormConfig.ADD_FORM_DEFAULT_HEIGHT
                     );
@@ -102,6 +105,62 @@ public class MainForm extends AbstractDataForm {
 
                     FormHelper.showInfo("Операция удаления выполнена успешно", "Успешное удаление");
                     updateMonitorTable();
+                }
+            }
+        });
+
+        addResolutionBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                FormHelper.showWindow(
+                        new AddEditResolutionForm(null).getRootPanel(),
+                        FormConfig.ADD_SR_FORM_NAME,
+                        FormConfig.ADD_SR_FORM_DEFAULT_WIDTH,
+                        FormConfig.ADD_SR_FORM_DEFAULT_HEIGHT
+                );
+            }
+        });
+
+        editResolutionBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int selectedRowCount = resolutionTable.getSelectedRowCount();
+                if (selectedRowCount > 0) {
+                    int selectedRow = resolutionTable.getSelectedRows()[0];
+                    int colIndex = TableModelUtil.findIdColumn(resolutionTable);
+
+                    Long id = (Long) resolutionTable.getValueAt(selectedRow, colIndex);
+                    ScreenResolution resolution = SCREEN_RESOLUTION_DAO.find(id);
+
+                    FormHelper.showWindow(
+                            new AddEditResolutionForm(resolution).getRootPanel(),
+                            FormConfig.EDIT_SR_FORM_NAME,
+                            FormConfig.ADD_SR_FORM_DEFAULT_WIDTH,
+                            FormConfig.ADD_SR_FORM_DEFAULT_HEIGHT
+                    );
+                }
+            }
+        });
+
+        delResolutionBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int selectedRowCount = resolutionTable.getSelectedRowCount();
+
+                if (selectedRowCount > 0) {
+                    int[] selectedRows = resolutionTable.getSelectedRows();
+                    int colIndex = TableModelUtil.findIdColumn(resolutionTable);
+
+                    for (int selectedRow : selectedRows) {
+                        Long id = (Long) resolutionTable.getValueAt(selectedRow, colIndex);
+                        try {
+                            ScreenResolution resolution = SCREEN_RESOLUTION_DAO.find(id);
+                            SCREEN_RESOLUTION_DAO.remove(resolution);
+                        } catch (RuntimeException exc) {
+                            FormHelper.showError("Ошибка при выполении операции", "Ошибка удаления");
+                            return;
+                        }
+                    }
+
+                    FormHelper.showInfo("Операция удаления выполнена успешно", "Успешное удаление");
+                    updateResolutionTable();
                 }
             }
         });

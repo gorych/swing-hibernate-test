@@ -8,55 +8,38 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.util.List;
 
-public class AddEditMonitorForm extends AbstractDataForm {
+public class AddEditResolutionForm extends AbstractDataForm {
 
     private JPanel rootPanel;
-
-    private JTextField nameField;
-    private JTextField diagonalField;
-    private JTextField guaranteeField;
-    private JTextField priceField;
-
+    private JTextField xField;
+    private JTextField yField;
     private JButton saveBtn;
-    private JComboBox<ScreenResolution> resolutionCb;
 
-    public AddEditMonitorForm(final Monitor oldMonitor) {
-        List<ScreenResolution> resolutions = SCREEN_RESOLUTION_DAO.findAll();
-        for (ScreenResolution resolution : resolutions) {
-            resolutionCb.addItem(resolution);
-        }
-
-        if (oldMonitor != null) {
-            nameField.setText(oldMonitor.getName());
-            diagonalField.setText(oldMonitor.getDiagonal() + "");
-            guaranteeField.setText(oldMonitor.getGuaranteePeriod() + "");
-            priceField.setText(oldMonitor.getPrice() + "");
-            resolutionCb.setSelectedItem(oldMonitor.getScreenResolution());
+    public AddEditResolutionForm(final ScreenResolution oldResolution) {
+        if (oldResolution != null) {
+            xField.setText(oldResolution.getX() + "");
+            yField.setText(oldResolution.getY() + "");
         }
 
         saveBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String name = nameField.getText();
-                    double diagonal = Double.valueOf(diagonalField.getText());
-                    int guarantee = Integer.valueOf(guaranteeField.getText());
-                    BigDecimal price = BigDecimal.valueOf(Double.valueOf(priceField.getText()));
-                    ScreenResolution screenResolution = (ScreenResolution) resolutionCb.getSelectedItem();
+                    int x = Integer.valueOf(xField.getText());
+                    int y = Integer.valueOf(yField.getText());
 
-                    Monitor newMonitor = new Monitor(name, price, diagonal, guarantee, screenResolution);
-                    if (oldMonitor != null) {
-                        newMonitor.setId(oldMonitor.getId());
+                    ScreenResolution newResolution = new ScreenResolution(x, y);
+                    if (oldResolution != null) {
+                        newResolution.setId(oldResolution.getId());
                     }
 
-                    MONITOR_DAO.saveOrUpdate(newMonitor);
+                    SCREEN_RESOLUTION_DAO.saveOrUpdate(newResolution);
                 } catch (RuntimeException exc) {
                     FormHelper.showError("Значения полей введены некорректно. Попробуйте еще раз.", "Некорректный ввод");
                     return;
                 }
 
-                if (oldMonitor == null) {
+                if (oldResolution == null) {
                     int success = FormHelper.showConfirm(
                             "Запись успешно сохранена. Хотите добавить еще одну?",
                             "Успешное добавление"
