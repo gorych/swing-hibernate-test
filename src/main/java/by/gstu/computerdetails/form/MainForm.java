@@ -80,7 +80,10 @@ public class MainForm extends AbstractDataForm {
                             FormConfig.ADD_FORM_DEFAULT_WIDTH,
                             FormConfig.ADD_FORM_DEFAULT_HEIGHT
                     );
+                } else {
+                    FormHelper.showInfo("Не выбрана запись для редактирования.", "Уведомление");
                 }
+
             }
         });
 
@@ -136,6 +139,8 @@ public class MainForm extends AbstractDataForm {
                             FormConfig.ADD_SR_FORM_DEFAULT_WIDTH,
                             FormConfig.ADD_SR_FORM_DEFAULT_HEIGHT
                     );
+                } else {
+                    FormHelper.showInfo("Не выбрана запись для редактирования.", "Уведомление");
                 }
             }
         });
