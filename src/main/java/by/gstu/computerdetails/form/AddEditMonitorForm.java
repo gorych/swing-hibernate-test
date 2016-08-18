@@ -1,5 +1,6 @@
 package by.gstu.computerdetails.form;
 
+import by.gstu.computerdetails.entity.MatrixType;
 import by.gstu.computerdetails.entity.Monitor;
 import by.gstu.computerdetails.entity.ScreenResolution;
 import by.gstu.computerdetails.form.helper.FormHelper;
@@ -21,11 +22,18 @@ public class AddEditMonitorForm extends AbstractDataForm {
 
     private JButton saveBtn;
     private JComboBox<ScreenResolution> resolutionCb;
+    private JComboBox<MatrixType> matrixCb;
 
     public AddEditMonitorForm(final Monitor oldMonitor) {
         List<ScreenResolution> resolutions = SCREEN_RESOLUTION_DAO.findAll();
+        List<MatrixType> types = MATRIX_TYPE_DAO.findAll();
+
         for (ScreenResolution resolution : resolutions) {
             resolutionCb.addItem(resolution);
+        }
+
+        for (MatrixType type : types) {
+            matrixCb.addItem(type);
         }
 
         if (oldMonitor != null) {
@@ -34,6 +42,7 @@ public class AddEditMonitorForm extends AbstractDataForm {
             guaranteeField.setText(oldMonitor.getGuaranteePeriod() + "");
             priceField.setText(oldMonitor.getPrice() + "");
             resolutionCb.setSelectedItem(oldMonitor.getScreenResolution());
+            matrixCb.setSelectedItem(oldMonitor.getMatrixType());
         }
 
         saveBtn.addActionListener(new ActionListener() {
@@ -44,8 +53,9 @@ public class AddEditMonitorForm extends AbstractDataForm {
                     int guarantee = Integer.valueOf(guaranteeField.getText());
                     BigDecimal price = BigDecimal.valueOf(Double.valueOf(priceField.getText()));
                     ScreenResolution screenResolution = (ScreenResolution) resolutionCb.getSelectedItem();
+                    MatrixType matrixType = (MatrixType) matrixCb.getSelectedItem();
 
-                    Monitor newMonitor = new Monitor(name, price, diagonal, guarantee, screenResolution);
+                    Monitor newMonitor = new Monitor(name, price, diagonal, guarantee, screenResolution, matrixType);
                     if (oldMonitor != null) {
                         newMonitor.setId(oldMonitor.getId());
                     }

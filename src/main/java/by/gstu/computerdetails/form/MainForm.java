@@ -2,6 +2,7 @@ package by.gstu.computerdetails.form;
 
 import by.gstu.computerdetails.config.FormConfig;
 import by.gstu.computerdetails.config.HibernateUtil;
+import bean.Cluster;
 import by.gstu.computerdetails.entity.Monitor;
 import by.gstu.computerdetails.entity.ScreenResolution;
 import by.gstu.computerdetails.form.helper.FormHelper;
@@ -33,9 +34,11 @@ public class MainForm extends AbstractDataForm {
     private JButton addResolutionBtn;
     private JButton editResolutionBtn;
     private JButton delResolutionBtn;
+    private JButton addCluster;
+    private JPanel clusterPanel;
 
     private MainForm() {
-        Component mainTab = tabbedPane.getComponent(0);
+        Component clusterTab = tabbedPane.getComponent(0);
         Component monitorTab = tabbedPane.getComponent(1);
         final Component resolutionTab = tabbedPane.getComponent(2);
 
@@ -207,5 +210,15 @@ public class MainForm extends AbstractDataForm {
     public void updateTables() {
         updateMonitorTable();
         updateResolutionTable();
+    }
+
+    public void setData(Cluster data) {
+    }
+
+    public void getData(Cluster data) {
+    }
+
+    public boolean isModified(Cluster data) {
+        return false;
     }
 }

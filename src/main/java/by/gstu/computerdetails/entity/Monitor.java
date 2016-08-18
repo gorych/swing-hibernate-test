@@ -37,15 +37,21 @@ public class Monitor extends BaseEntity {
     @JoinColumn(name = "screen_resolution_id")
     private ScreenResolution screenResolution;
 
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "matrix_type_id")
+    private MatrixType matrixType;
+
     public Monitor() {
     }
 
-    public Monitor(String name, BigDecimal price, double diagonal, int guaranteePeriod, ScreenResolution screenResolution) {
+    public Monitor(String name, BigDecimal price, double diagonal, int guaranteePeriod, ScreenResolution screenResolution, MatrixType matrixType) {
         setName(name);
         setPrice(price);
         setDiagonal(diagonal);
         setGuaranteePeriod(guaranteePeriod);
         setScreenResolution(screenResolution);
+        setMatrixType(matrixType);
     }
 
     @TableColumn(name = "ID", index = 0, hidden = true)
@@ -82,7 +88,19 @@ public class Monitor extends BaseEntity {
         this.price = price;
     }
 
-    @TableColumn(name = "Диагональ, дюйм", index = 3)
+    @TableColumn(name = "Тип матрицы", index = 3)
+    public MatrixType getMatrixType() {
+        return matrixType;
+    }
+
+    public void setMatrixType(MatrixType matrixType) {
+        if (matrixType == null) {
+            throw new IllegalArgumentException("Matrix type is null.");
+        }
+        this.matrixType = matrixType;
+    }
+
+    @TableColumn(name = "Диагональ, дюйм", index = 4)
     public double getDiagonal() {
         return diagonal;
     }
@@ -94,7 +112,7 @@ public class Monitor extends BaseEntity {
         this.diagonal = diagonal;
     }
 
-    @TableColumn(name = "Гарант. период, мес", index = 4)
+    @TableColumn(name = "Гарант. период, мес", index = 5)
     public int getGuaranteePeriod() {
         return guaranteePeriod;
     }
@@ -106,7 +124,7 @@ public class Monitor extends BaseEntity {
         this.guaranteePeriod = guaranteePeriod;
     }
 
-    @TableColumn(name = "Разрешение", index = 5)
+    @TableColumn(name = "Разрешение", index = 6)
     public String getFormatScreenResolution() {
         return screenResolution.toString();
     }
