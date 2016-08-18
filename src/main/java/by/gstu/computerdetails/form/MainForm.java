@@ -1,8 +1,8 @@
 package by.gstu.computerdetails.form;
 
+import bean.Cluster;
 import by.gstu.computerdetails.config.FormConfig;
 import by.gstu.computerdetails.config.HibernateUtil;
-import bean.Cluster;
 import by.gstu.computerdetails.entity.Monitor;
 import by.gstu.computerdetails.entity.ScreenResolution;
 import by.gstu.computerdetails.form.helper.FormHelper;
@@ -20,6 +20,8 @@ import java.util.List;
 
 public class MainForm extends AbstractDataForm {
 
+    private static final int SETTINGS_TAB_INDEX = 3;
+
     private static MainForm instance = new MainForm();
 
     private JPanel mainPanel;
@@ -36,6 +38,13 @@ public class MainForm extends AbstractDataForm {
     private JButton delResolutionBtn;
     private JButton addCluster;
     private JPanel clusterPanel;
+    private JButton settingsBtn;
+    private JTextField textField1;
+    private JTextField textField2;
+    private JComboBox comboBox1;
+    private JComboBox comboBox2;
+    private JTextField textField3;
+    private JButton analysisBtn;
 
     private MainForm() {
         Component clusterTab = tabbedPane.getComponent(0);
@@ -170,6 +179,12 @@ public class MainForm extends AbstractDataForm {
                     FormHelper.showInfo("Операция удаления выполнена успешно", "Успешное удаление");
                     updateTables();
                 }
+            }
+        });
+
+        settingsBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedIndex(SETTINGS_TAB_INDEX);
             }
         });
     }
