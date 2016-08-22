@@ -18,6 +18,7 @@
         <property name="hibernate.current_session_context_class">thread</property>
 
         <mapping class="by.gstu.computerdetails.entity.Monitor"/>
+        <mapping class="by.gstu.computerdetails.entity.Cluster"/>
         <mapping class="by.gstu.computerdetails.entity.MatrixType"/>
         <mapping class="by.gstu.computerdetails.entity.ScreenResolution"/>
     </session-factory>
