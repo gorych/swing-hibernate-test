@@ -80,6 +80,6 @@ public class Cluster extends BaseEntity {
 
     @TableColumn(name = "Прототип", index = 3)
     public String getStringPrototype() {
-        return prototype.toString();
+        return prototype.getName();
     }
 }

@@ -10,6 +10,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -44,6 +46,9 @@ public class Monitor extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "matrix_type_id")
     private MatrixType matrixType;
+
+    @OneToMany(mappedBy = "prototype", cascade = CascadeType.ALL)
+    private List<Cluster> clusters = new ArrayList<Cluster>();
 
     public Monitor() {
     }
@@ -150,6 +155,14 @@ public class Monitor extends BaseEntity {
 
     public void setProto(boolean proto) {
         isProto = proto;
+    }
+
+    public List<Cluster> getClusters() {
+        return clusters;
+    }
+
+    public void setClusters(List<Cluster> clusters) {
+        this.clusters = clusters;
     }
 
     @Override

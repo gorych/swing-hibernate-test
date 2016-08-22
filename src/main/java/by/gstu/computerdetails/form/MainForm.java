@@ -44,9 +44,12 @@ public class MainForm extends AbstractDataForm {
     private JButton editResolutionBtn;
     private JButton delResolutionBtn;
 
-    //Settings tab
-    private JButton addClusterBtn;
+    //Cluster tab
     private JTable clusterTable;
+
+    private JButton addClusterBtn;
+    private JButton editClusterBtn;
+    private JButton delClusterBtn;
 
     //Main tab
     private JTextField priceField;
@@ -210,6 +213,64 @@ public class MainForm extends AbstractDataForm {
                         try {
                             ScreenResolution resolution = SCREEN_RESOLUTION_DAO.find(id);
                             SCREEN_RESOLUTION_DAO.remove(resolution);
+                        } catch (RuntimeException exc) {
+                            FormHelper.showError("Ошибка при выполнении операции", "Ошибка удаления");
+                            return;
+                        }
+                    }
+
+                    FormHelper.showInfo("Операция удаления выполнена успешно", "Успешное удаление");
+                    updateTables();
+                }
+            }
+        });
+
+        addClusterBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                FormHelper.showWindow(
+                        new AddEditResolutionForm(null).getRootPanel(),
+                        FormConfig.ADD_SR_FORM_NAME,
+                        FormConfig.ADD_SR_FORM_DEFAULT_WIDTH,
+                        FormConfig.ADD_SR_FORM_DEFAULT_HEIGHT
+                );
+            }
+        });
+
+        editClusterBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int selectedRowCount = resolutionTable.getSelectedRowCount();
+                if (selectedRowCount > 0) {
+                    int selectedRow = resolutionTable.getSelectedRows()[0];
+                    int colIndex = TableModelUtil.findIdColumn(resolutionTable);
+
+                    Long id = (Long) resolutionTable.getValueAt(selectedRow, colIndex);
+                    ScreenResolution resolution = SCREEN_RESOLUTION_DAO.find(id);
+
+                    FormHelper.showWindow(
+                            new AddEditResolutionForm(resolution).getRootPanel(),
+                            FormConfig.EDIT_SR_FORM_NAME,
+                            FormConfig.ADD_SR_FORM_DEFAULT_WIDTH,
+                            FormConfig.ADD_SR_FORM_DEFAULT_HEIGHT
+                    );
+                } else {
+                    FormHelper.showInfo("Не выбрана запись для редактирования.", "Уведомление");
+                }
+            }
+        });
+
+        delClusterBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int selectedRowCount = clusterTable.getSelectedRowCount();
+
+                if (selectedRowCount > 0) {
+                    int[] selectedRows = clusterTable.getSelectedRows();
+                    int colIndex = TableModelUtil.findIdColumn(clusterTable);
+
+                    for (int selectedRow : selectedRows) {
+                        Long id = (Long) clusterTable.getValueAt(selectedRow, colIndex);
+                        try {
+                            Cluster cluster = CLUSTER_DAO.find(id);
+                            CLUSTER_DAO.remove(cluster);
                         } catch (RuntimeException exc) {
                             FormHelper.showError("Ошибка при выполнении операции", "Ошибка удаления");
                             return;
