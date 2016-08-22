@@ -79,7 +79,7 @@
                               <text value="Цена, руб"/>
                             </properties>
                           </component>
-                          <component id="7c10e" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+                          <component id="7c10e" class="javax.swing.JTextField" binding="priceField">
                             <constraints>
                               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="150" height="-1"/>
@@ -95,7 +95,7 @@
                               <text value="Диагональ"/>
                             </properties>
                           </component>
-                          <component id="9228" class="javax.swing.JTextField" binding="textField2" default-binding="true">
+                          <component id="9228" class="javax.swing.JTextField" binding="diagonalField">
                             <constraints>
                               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="150" height="-1"/>
@@ -119,13 +119,13 @@
                               <text value="Разрешение"/>
                             </properties>
                           </component>
-                          <component id="d6ad1" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+                          <component id="d6ad1" class="javax.swing.JComboBox" binding="matrixCb">
                             <constraints>
                               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties/>
                           </component>
-                          <component id="c39d8" class="javax.swing.JComboBox" binding="comboBox2" default-binding="true">
+                          <component id="c39d8" class="javax.swing.JComboBox" binding="resolutionCb">
                             <constraints>
                               <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
@@ -139,7 +139,7 @@
                               <text value="Гарантийный срок, мес"/>
                             </properties>
                           </component>
-                          <component id="c9e43" class="javax.swing.JTextField" binding="textField3" default-binding="true">
+                          <component id="c9e43" class="javax.swing.JTextField" binding="guaranteeField">
                             <constraints>
                               <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="150" height="-1"/>
@@ -308,22 +308,10 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <grid id="cd693" binding="clusterPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="5" left="5" bottom="5" right="5"/>
+                  <component id="ddb61" class="javax.swing.JTable" binding="clusterTable">
                     <constraints/>
                     <properties/>
-                    <border type="none"/>
-                    <children>
-                      <component id="11e85" class="javax.swing.JButton" binding="addCluster">
-                        <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Добавить кластер"/>
-                        </properties>
-                      </component>
-                    </children>
-                  </grid>
+                  </component>
                 </children>
               </scrollpane>
             </children>

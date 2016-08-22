@@ -1,8 +1,8 @@
 package by.gstu.computerdetails.form;
 
-import bean.Cluster;
 import by.gstu.computerdetails.config.FormConfig;
 import by.gstu.computerdetails.config.HibernateUtil;
+import by.gstu.computerdetails.entity.MatrixType;
 import by.gstu.computerdetails.entity.Monitor;
 import by.gstu.computerdetails.entity.ScreenResolution;
 import by.gstu.computerdetails.form.helper.FormHelper;
@@ -20,36 +20,69 @@ import java.util.List;
 
 public class MainForm extends AbstractDataForm {
 
+    //region Fields
+
     private static final int SETTINGS_TAB_INDEX = 3;
 
     private static MainForm instance = new MainForm();
 
     private JPanel mainPanel;
-
-    private JTable monitorTable;
-    private JTable resolutionTable;
-
     private JTabbedPane tabbedPane;
+
+    //Monitor tab
+    private JTable monitorTable;
+
     private JButton addMonitorBtn;
     private JButton editMonitorBtn;
     private JButton delMonitorBtn;
+
+    //Resolution tab
+    private JTable resolutionTable;
+
     private JButton addResolutionBtn;
     private JButton editResolutionBtn;
     private JButton delResolutionBtn;
-    private JButton addCluster;
-    private JPanel clusterPanel;
-    private JButton settingsBtn;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JComboBox comboBox1;
-    private JComboBox comboBox2;
-    private JTextField textField3;
+
+    //Settings tab
+    private JButton addClusterBtn;
+    private JTable clusterTable;
+
+    //Main tab
+    private JTextField priceField;
+    private JTextField diagonalField;
+
+    private JComboBox<MatrixType> matrixCb;
+    private JComboBox<ScreenResolution> resolutionCb;
+    private JTextField guaranteeField;
+
     private JButton analysisBtn;
+    private JButton settingsBtn;
+
+    //endregion
 
     private MainForm() {
-        Component clusterTab = tabbedPane.getComponent(0);
-        Component monitorTab = tabbedPane.getComponent(1);
+        final Component analyzeTab = tabbedPane.getComponent(0);
+        final Component monitorTab = tabbedPane.getComponent(1);
         final Component resolutionTab = tabbedPane.getComponent(2);
+        final Component settingsTab = tabbedPane.getComponent(3);
+
+        //region Listeners
+
+        analyzeTab.addComponentListener(new ChangeTabListener() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                List<ScreenResolution> resolutions = SCREEN_RESOLUTION_DAO.findAll();
+                List<MatrixType> types = MATRIX_TYPE_DAO.findAll();
+
+                for (ScreenResolution resolution : resolutions) {
+                    resolutionCb.addItem(resolution);
+                }
+
+                for (MatrixType type : types) {
+                    matrixCb.addItem(type);
+                }
+            }
+        });
 
         monitorTab.addComponentListener(new ChangeTabListener() {
             @Override
@@ -171,7 +204,7 @@ public class MainForm extends AbstractDataForm {
                             ScreenResolution resolution = SCREEN_RESOLUTION_DAO.find(id);
                             SCREEN_RESOLUTION_DAO.remove(resolution);
                         } catch (RuntimeException exc) {
-                            FormHelper.showError("Ошибка при выполении операции", "Ошибка удаления");
+                            FormHelper.showError("Ошибка при выполнении операции", "Ошибка удаления");
                             return;
                         }
                     }
@@ -187,6 +220,9 @@ public class MainForm extends AbstractDataForm {
                 tabbedPane.setSelectedIndex(SETTINGS_TAB_INDEX);
             }
         });
+
+        //endregion
+
     }
 
     public static MainForm GET_INSTANCE() {
@@ -227,13 +263,4 @@ public class MainForm extends AbstractDataForm {
         updateResolutionTable();
     }
 
-    public void setData(Cluster data) {
-    }
-
-    public void getData(Cluster data) {
-    }
-
-    public boolean isModified(Cluster data) {
-        return false;
-    }
 }
