@@ -2,6 +2,7 @@ package by.gstu.computerdetails.form;
 
 import by.gstu.computerdetails.config.FormConfig;
 import by.gstu.computerdetails.config.HibernateUtil;
+import by.gstu.computerdetails.entity.Cluster;
 import by.gstu.computerdetails.entity.MatrixType;
 import by.gstu.computerdetails.entity.Monitor;
 import by.gstu.computerdetails.entity.ScreenResolution;
@@ -95,6 +96,13 @@ public class MainForm extends AbstractDataForm {
             @Override
             public void componentShown(ComponentEvent e) {
                 updateResolutionTable();
+            }
+        });
+
+        settingsTab.addComponentListener(new ChangeTabListener() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                updateClusterTable();
             }
         });
 
@@ -258,9 +266,16 @@ public class MainForm extends AbstractDataForm {
         TableModelUtil.hideIdColumns(monitorTable);
     }
 
+    private void updateClusterTable() {
+        List<Cluster> clusters = CLUSTER_DAO.findAll();
+        clusterTable.setModel(new UniversalTableModel<Cluster>(clusters, Cluster.class));
+        TableModelUtil.hideIdColumns(clusterTable);
+    }
+
     public void updateTables() {
         updateMonitorTable();
         updateResolutionTable();
+        updateClusterTable();
     }
 
 }
