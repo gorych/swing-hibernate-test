@@ -11,7 +11,7 @@ public class MonitorDaoImpl extends GenericDaoImpl<Monitor, Long> implements Mon
     @SuppressWarnings("unchecked")
     public List<Monitor> findAll() {
         HibernateUtil.beginTransaction();
-        List<Monitor> monitors = getSession().createQuery("from Monitor").list();
+        List<Monitor> monitors = getSession().createQuery("from Monitor where isProto = false").list();
         HibernateUtil.commitTransaction();
 
         return monitors;

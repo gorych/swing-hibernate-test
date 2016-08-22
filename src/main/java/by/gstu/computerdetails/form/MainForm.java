@@ -136,7 +136,6 @@ public class MainForm extends AbstractDataForm {
                 } else {
                     FormHelper.showInfo("Не выбрана запись для редактирования.", "Уведомление");
                 }
-
             }
         });
 

@@ -10,8 +10,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table
@@ -34,6 +32,9 @@ public class Monitor extends BaseEntity {
     @Column(nullable = false, name = "guarantee_period")
     private int guaranteePeriod;
 
+    @Column(nullable = false, name = "is_proto")
+    private boolean isProto;
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "screen_resolution_id")
@@ -54,6 +55,7 @@ public class Monitor extends BaseEntity {
         setGuaranteePeriod(guaranteePeriod);
         setScreenResolution(screenResolution);
         setMatrixType(matrixType);
+        setProto(false);
     }
 
     @TableColumn(name = "ID", index = 0, hidden = true)
@@ -140,6 +142,14 @@ public class Monitor extends BaseEntity {
             throw new IllegalArgumentException("Screen resolution is null.");
         }
         this.screenResolution = screenResolution;
+    }
+
+    public boolean isProto() {
+        return isProto;
+    }
+
+    public void setProto(boolean proto) {
+        isProto = proto;
     }
 
     @Override
