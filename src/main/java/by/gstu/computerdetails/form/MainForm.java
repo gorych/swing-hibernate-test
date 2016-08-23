@@ -60,10 +60,10 @@ public class MainForm extends AbstractDataForm {
     private JButton analysisBtn;
     private JButton settingsBtn;
 
-    //endregion
-
     //Matrix tab
     private JTable matrixTable;
+
+    //endregion
 
     private MainForm() {
         final Component analyzeTab = tabbedPane.getComponent(0);
@@ -361,6 +361,8 @@ public class MainForm extends AbstractDataForm {
         }
     }
 
+    //region Update table methods
+
     private void updateResolutionTable() {
         List<ScreenResolution> resolutions = SCREEN_RESOLUTION_DAO.findAll();
         resolutionTable.setModel(new UniversalTableModel<ScreenResolution>(resolutions, ScreenResolution.class));
@@ -390,5 +392,7 @@ public class MainForm extends AbstractDataForm {
         updateResolutionTable();
         updateClusterTable();
     }
+
+    //endregion
 
 }
