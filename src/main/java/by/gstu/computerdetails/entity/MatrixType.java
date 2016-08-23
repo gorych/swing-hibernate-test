@@ -23,6 +23,9 @@ public class MatrixType extends BaseEntity {
     @Column(length = 200, nullable = true)
     private String description;
 
+    @Column(nullable = false)
+    private double weight;
+
     public MatrixType() {
     }
 
@@ -30,6 +33,12 @@ public class MatrixType extends BaseEntity {
         this.id = id;
         this.name = name;
         this.description = description;
+    }
+
+    public MatrixType(String name, String description, double weight) {
+        this.name = name;
+        this.description = description;
+        this.weight = weight;
     }
 
     public long getId() {
@@ -56,6 +65,14 @@ public class MatrixType extends BaseEntity {
         this.description = description;
     }
 
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,7 +82,7 @@ public class MatrixType extends BaseEntity {
         MatrixType that = (MatrixType) o;
 
         return new EqualsBuilder()
-                .append(id, that.id)
+                .append(weight, that.weight)
                 .append(name, that.name)
                 .isEquals();
     }
@@ -73,8 +90,8 @@ public class MatrixType extends BaseEntity {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(id)
                 .append(name)
+                .append(weight)
                 .toHashCode();
     }
 

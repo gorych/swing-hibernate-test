@@ -14,7 +14,7 @@
         <property name="connection.password">admin</property>
 
         <!--Change it to 'create' if DB not exists-->
-        <property name="hbm2ddl.auto">validate</property>
+        <property name="hbm2ddl.auto">update</property>
         <property name="hibernate.current_session_context_class">thread</property>
 
         <mapping class="by.gstu.computerdetails.entity.Cluster"/>
