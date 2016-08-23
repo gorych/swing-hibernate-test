@@ -13,6 +13,8 @@ public final class FormConfig {
     public static final String ADD_CLUSTER_FORM_NAME = "Добавление кластера";
     public static final String EDIT_CLUSTER_FORM_NAME = "Изменение кластера";
 
+    public static final String EDIT_WEIGHT_FORM_NAME = "Изменение веса";
+
     public static final int DEFAULT_WINDOW_WIDTH = 750;
     public static final int DEFAULT_WINDOW_HEIGHT = 450;
 
@@ -24,6 +26,9 @@ public final class FormConfig {
 
     public static final int ADD_CLUSTER_FORM_DEFAULT_WIDTH = 335;
     public static final int ADD_CLUSTER_FORM_DEFAULT_HEIGHT = 325;
+
+    public static final int WEIGHT_FORM_DEFAULT_WIDTH = 280;
+    public static final int WEIGHT_FORM_DEFAULT_HEIGHT = 130;
 
     private FormConfig() {
     }

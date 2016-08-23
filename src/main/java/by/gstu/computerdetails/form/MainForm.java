@@ -14,9 +14,7 @@ import org.hibernate.Session;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.util.List;
 
 public class MainForm extends AbstractDataForm {
@@ -64,13 +62,17 @@ public class MainForm extends AbstractDataForm {
 
     //endregion
 
+    //Matrix tab
+    private JTable matrixTable;
+
     private MainForm() {
         final Component analyzeTab = tabbedPane.getComponent(0);
         final Component monitorTab = tabbedPane.getComponent(1);
         final Component resolutionTab = tabbedPane.getComponent(2);
-        final Component settingsTab = tabbedPane.getComponent(3);
+        final Component matrixTab = tabbedPane.getComponent(3);
+        final Component settingsTab = tabbedPane.getComponent(4);
 
-        //region Listeners
+        //region Tab Listeners
 
         analyzeTab.addComponentListener(new ChangeTabListener() {
             @Override
@@ -95,6 +97,13 @@ public class MainForm extends AbstractDataForm {
             }
         });
 
+        matrixTab.addComponentListener(new ChangeTabListener() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                updateMatrixTable();
+            }
+        });
+
         resolutionTab.addComponentListener(new ChangeTabListener() {
             @Override
             public void componentShown(ComponentEvent e) {
@@ -108,6 +117,10 @@ public class MainForm extends AbstractDataForm {
                 updateClusterTable();
             }
         });
+
+        //endregion
+
+        //region Monitor Tab Listeners
 
         addMonitorBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -167,6 +180,10 @@ public class MainForm extends AbstractDataForm {
             }
         });
 
+        //endregion
+
+        //region Resolution Tab Listeners
+
         addResolutionBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 FormHelper.showWindow(
@@ -225,6 +242,36 @@ public class MainForm extends AbstractDataForm {
             }
         });
 
+        //endregion
+
+        //region Matrix Tab Listener
+
+        matrixTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int selectedRow = matrixTable.getSelectedRow();
+                if (selectedRow < 0) {
+                    return;
+                }
+
+                int idCol = TableModelUtil.findIdColumn(matrixTable);
+                Long id = (Long) matrixTable.getValueAt(selectedRow, idCol);
+
+                MatrixType matrixType = MATRIX_TYPE_DAO.find(id);
+
+                FormHelper.showWindow(
+                        new MatrixWeightForm(matrixType).getRootPanel(),
+                        FormConfig.EDIT_WEIGHT_FORM_NAME,
+                        FormConfig.WEIGHT_FORM_DEFAULT_WIDTH,
+                        FormConfig.WEIGHT_FORM_DEFAULT_HEIGHT
+                );
+            }
+        });
+
+        //endregion
+
+        //region Cluster Tab Listener
+
         addClusterBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 FormHelper.showWindow(
@@ -248,7 +295,7 @@ public class MainForm extends AbstractDataForm {
 
                     FormHelper.showWindow(
                             new AddEditClusterForm(cluster).getRootPanel(),
-                            FormConfig.ADD_CLUSTER_FORM_NAME,
+                            FormConfig.EDIT_CLUSTER_FORM_NAME,
                             FormConfig.ADD_CLUSTER_FORM_DEFAULT_WIDTH,
                             FormConfig.ADD_CLUSTER_FORM_DEFAULT_HEIGHT
                     );
@@ -330,6 +377,12 @@ public class MainForm extends AbstractDataForm {
         List<Cluster> clusters = CLUSTER_DAO.findAll();
         clusterTable.setModel(new UniversalTableModel<Cluster>(clusters, Cluster.class));
         TableModelUtil.hideIdColumns(clusterTable);
+    }
+
+    public void updateMatrixTable() {
+        List<MatrixType> matrixTypes = MATRIX_TYPE_DAO.findAll();
+        matrixTable.setModel(new UniversalTableModel<MatrixType>(matrixTypes, MatrixType.class));
+        TableModelUtil.hideIdColumns(matrixTable);
     }
 
     public void updateTables() {

@@ -1,12 +1,11 @@
 package by.gstu.computerdetails.entity;
 
+import by.gstu.computerdetails.annotation.TableColumn;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table
@@ -41,6 +40,7 @@ public class MatrixType extends BaseEntity {
         this.weight = weight;
     }
 
+    @TableColumn(name = "ID", index = 0, hidden = true)
     public long getId() {
         return id;
     }
@@ -49,6 +49,7 @@ public class MatrixType extends BaseEntity {
         this.id = id;
     }
 
+    @TableColumn(name = "Наименование", index = 1)
     public String getName() {
         return name;
     }
@@ -57,6 +58,7 @@ public class MatrixType extends BaseEntity {
         this.name = name;
     }
 
+    @TableColumn(name = "Описание", index = 2)
     public String getDescription() {
         return description;
     }
@@ -65,11 +67,15 @@ public class MatrixType extends BaseEntity {
         this.description = description;
     }
 
+    @TableColumn(name = "Вес", index = 3)
     public double getWeight() {
         return weight;
     }
 
     public void setWeight(double weight) {
+        if (weight < 0 || weight > 1) {
+            throw new IllegalArgumentException("Matrix weight less then 0 or more then 1");
+        }
         this.weight = weight;
     }
 
