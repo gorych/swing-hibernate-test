@@ -25,7 +25,6 @@ public class Cluster extends BaseEntity {
     @Column(length = 300, nullable = false)
     private String description;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "monitor_id")
     private Monitor prototype;

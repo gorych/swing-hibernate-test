@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -35,6 +36,7 @@ public class Monitor extends BaseEntity {
     private int guaranteePeriod;
 
     @Column(nullable = false, name = "is_proto")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean isProto;
 
     @NotNull

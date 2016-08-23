@@ -23,7 +23,7 @@ public final class FormConfig {
     public static final int ADD_SR_FORM_DEFAULT_HEIGHT = 150;
 
     public static final int ADD_CLUSTER_FORM_DEFAULT_WIDTH = 335;
-    public static final int ADD_CLUSTER_FORM_DEFAULT_HEIGHT = 320;
+    public static final int ADD_CLUSTER_FORM_DEFAULT_HEIGHT = 325;
 
     private FormConfig() {
     }

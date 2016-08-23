@@ -244,12 +244,7 @@ public class MainForm extends AbstractDataForm {
                     int colIndex = TableModelUtil.findIdColumn(clusterTable);
 
                     Long id = (Long) clusterTable.getValueAt(selectedRow, colIndex);
-                    Cluster cluster = null;
-                    try {
-                        cluster = CLUSTER_DAO.find(1L);
-                    } catch (Exception exc) {
-                        exc.printStackTrace();
-                    }
+                    Cluster cluster = CLUSTER_DAO.find(id);
 
                     FormHelper.showWindow(
                             new AddEditClusterForm(cluster).getRootPanel(),
