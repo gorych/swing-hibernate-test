@@ -8,6 +8,7 @@ import by.gstu.computerdetails.dao.impl.ClusterDaoImpl;
 import by.gstu.computerdetails.dao.impl.MatrixTypeDaoImpl;
 import by.gstu.computerdetails.dao.impl.MonitorDaoImpl;
 import by.gstu.computerdetails.dao.impl.ScreenResolutionDaoImpl;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +32,7 @@ public class AbstractDataForm {
         for (Component component : components) {
             if (component instanceof JTextField) {
                 JTextField field = (JTextField) component;
-                field.setText(org.apache.commons.lang3.StringUtils.EMPTY);
+                field.setText(StringUtils.EMPTY);
             }
 
             if (component instanceof JComboBox) {

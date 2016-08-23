@@ -228,29 +228,34 @@ public class MainForm extends AbstractDataForm {
         addClusterBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 FormHelper.showWindow(
-                        new AddEditResolutionForm(null).getRootPanel(),
-                        FormConfig.ADD_SR_FORM_NAME,
-                        FormConfig.ADD_SR_FORM_DEFAULT_WIDTH,
-                        FormConfig.ADD_SR_FORM_DEFAULT_HEIGHT
+                        new AddEditClusterForm(null).getRootPanel(),
+                        FormConfig.ADD_CLUSTER_FORM_NAME,
+                        FormConfig.ADD_CLUSTER_FORM_DEFAULT_WIDTH,
+                        FormConfig.ADD_CLUSTER_FORM_DEFAULT_HEIGHT
                 );
             }
         });
 
         editClusterBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int selectedRowCount = resolutionTable.getSelectedRowCount();
+                int selectedRowCount = clusterTable.getSelectedRowCount();
                 if (selectedRowCount > 0) {
-                    int selectedRow = resolutionTable.getSelectedRows()[0];
-                    int colIndex = TableModelUtil.findIdColumn(resolutionTable);
+                    int selectedRow = clusterTable.getSelectedRows()[0];
+                    int colIndex = TableModelUtil.findIdColumn(clusterTable);
 
-                    Long id = (Long) resolutionTable.getValueAt(selectedRow, colIndex);
-                    ScreenResolution resolution = SCREEN_RESOLUTION_DAO.find(id);
+                    Long id = (Long) clusterTable.getValueAt(selectedRow, colIndex);
+                    Cluster cluster = null;
+                    try {
+                        cluster = CLUSTER_DAO.find(1L);
+                    } catch (Exception exc) {
+                        exc.printStackTrace();
+                    }
 
                     FormHelper.showWindow(
-                            new AddEditResolutionForm(resolution).getRootPanel(),
-                            FormConfig.EDIT_SR_FORM_NAME,
-                            FormConfig.ADD_SR_FORM_DEFAULT_WIDTH,
-                            FormConfig.ADD_SR_FORM_DEFAULT_HEIGHT
+                            new AddEditClusterForm(cluster).getRootPanel(),
+                            FormConfig.ADD_CLUSTER_FORM_NAME,
+                            FormConfig.ADD_CLUSTER_FORM_DEFAULT_WIDTH,
+                            FormConfig.ADD_CLUSTER_FORM_DEFAULT_HEIGHT
                     );
                 } else {
                     FormHelper.showInfo("Не выбрана запись для редактирования.", "Уведомление");

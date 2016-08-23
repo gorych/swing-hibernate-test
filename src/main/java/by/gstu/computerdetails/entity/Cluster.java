@@ -3,6 +3,9 @@ package by.gstu.computerdetails.entity;
 import by.gstu.computerdetails.annotation.TableColumn;
 import com.sun.istack.internal.NotNull;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -30,11 +33,9 @@ public class Cluster extends BaseEntity {
     public Cluster() {
     }
 
-    public Cluster(long id, String name, String description, Monitor prototype) {
-        this.id = id;
-        this.name = name;
+    public Cluster(String name, String description) {
+        setName(name);
         this.description = description;
-        this.prototype = prototype;
     }
 
     @TableColumn(name = "ID", index = 0, hidden = true)
@@ -80,6 +81,40 @@ public class Cluster extends BaseEntity {
 
     @TableColumn(name = "Прототип", index = 3)
     public String getStringPrototype() {
-        return prototype.getName();
+        return prototype.getDiagonal()+"";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Cluster cluster = (Cluster) o;
+
+        return new EqualsBuilder()
+                .append(id, cluster.id)
+                .append(name, cluster.name)
+                .append(prototype, cluster.prototype)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(id)
+                .append(name)
+                .append(prototype)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("name", name)
+                .append("description", description)
+                .append("prototype", prototype)
+                .toString();
     }
 }
