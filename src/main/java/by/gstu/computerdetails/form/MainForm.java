@@ -1,5 +1,7 @@
 package by.gstu.computerdetails.form;
 
+import by.gstu.computerdetails.algorithm.K_Means;
+import by.gstu.computerdetails.algorithm.NormalizeObject;
 import by.gstu.computerdetails.config.FormConfig;
 import by.gstu.computerdetails.config.HibernateUtil;
 import by.gstu.computerdetails.entity.Cluster;
@@ -15,6 +17,7 @@ import org.hibernate.Session;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainForm extends AbstractDataForm {
@@ -78,6 +81,19 @@ public class MainForm extends AbstractDataForm {
             @Override
             public void componentShown(ComponentEvent e) {
                 fillComboBoxes();
+
+                List<Cluster> clusters = CLUSTER_DAO.findAll();
+                List<Monitor> monitors = MONITOR_DAO.findAll();
+
+                List<NormalizeObject> objects = new ArrayList<NormalizeObject>();
+                for (Monitor monitor : monitors) {
+                    objects.add(monitor);
+                }
+
+                K_Means kMeans = new K_Means(objects, clusters);
+                List<List<Integer>> clustering = kMeans.Clustering();
+
+                System.out.println(clustering);
             }
         });
 
@@ -330,7 +346,6 @@ public class MainForm extends AbstractDataForm {
         });
 
         fillComboBoxes();
-
     }
 
     public static MainForm GET_INSTANCE() {
