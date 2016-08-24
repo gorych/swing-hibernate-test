@@ -1,5 +1,6 @@
 package by.gstu.computerdetails.entity;
 
+import by.gstu.computerdetails.algorithm.NormalizeObject;
 import by.gstu.computerdetails.annotation.TableColumn;
 import com.sun.istack.internal.NotNull;
 import org.apache.commons.lang3.StringUtils;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Entity
 @Table
-public class Monitor extends BaseEntity {
+public class Monitor extends BaseEntity implements NormalizeObject {
 
     @Id
     @GeneratedValue(generator = "increment")
@@ -203,5 +204,17 @@ public class Monitor extends BaseEntity {
                 .append("guaranteePeriod", guaranteePeriod)
                 .append("screenResolution", screenResolution)
                 .toString();
+    }
+
+
+    public double[] getSignValues() {
+        int resolutionSignVal = screenResolution.getX() + screenResolution.getY();
+        return new double[]{
+                price.doubleValue(), guaranteePeriod, diagonal, resolutionSignVal, matrixType.getWeight()
+        };
+    }
+
+    public int signCount() {
+        return 5;
     }
 }

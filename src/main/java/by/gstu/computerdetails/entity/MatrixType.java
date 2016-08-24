@@ -72,9 +72,9 @@ public class MatrixType extends BaseEntity {
         return weight;
     }
 
-    public void setWeight(double weight) {
-        if (weight < 0 || weight > 1) {
-            throw new IllegalArgumentException("Matrix weight less then 0 or more then 1");
+    public void setWeight(int weight) {
+        if (weight <= 0 || weight > 10) {
+            throw new IllegalArgumentException("Matrix weight less or eq then 0 or more then 1");
         }
         this.weight = weight;
     }

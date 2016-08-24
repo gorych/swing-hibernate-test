@@ -17,17 +17,12 @@ public class MatrixWeightForm extends AbstractDataForm {
     public MatrixWeightForm(final MatrixType matrixType) {
         saveWeightBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                double weight;
+                int weight;
                 try {
-                    weight = Double.valueOf(weightField.getText());
+                    weight = Integer.valueOf(weightField.getText());
                     matrixType.setWeight(weight);
                 } catch (RuntimeException exc) {
-                    FormHelper.showError("Вес матрицы должен быть в диапозоне от 0 до 1.", "Некорректный ввод веса");
-                    return;
-                }
-
-                if (!isNormalWeight(matrixType, weight)) {
-                    FormHelper.showError("Сумма весов всех типов матриц не должна превышать 1.", "Некорректный ввод веса");
+                    FormHelper.showError("Вес матрицы должен быть больше 0 и меньше 10.", "Некорректный ввод веса");
                     return;
                 }
 

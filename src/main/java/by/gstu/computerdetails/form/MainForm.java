@@ -21,7 +21,7 @@ public class MainForm extends AbstractDataForm {
 
     //region Fields
 
-    private static final int SETTINGS_TAB_INDEX = 3;
+    private static final int SETTINGS_TAB_INDEX = 4;
 
     private static MainForm instance = new MainForm();
 
@@ -77,16 +77,7 @@ public class MainForm extends AbstractDataForm {
         analyzeTab.addComponentListener(new ChangeTabListener() {
             @Override
             public void componentShown(ComponentEvent e) {
-                List<ScreenResolution> resolutions = SCREEN_RESOLUTION_DAO.findAll();
-                List<MatrixType> types = MATRIX_TYPE_DAO.findAll();
-
-                for (ScreenResolution resolution : resolutions) {
-                    resolutionCb.addItem(resolution);
-                }
-
-                for (MatrixType type : types) {
-                    matrixCb.addItem(type);
-                }
+                fillComboBoxes();
             }
         });
 
@@ -330,13 +321,15 @@ public class MainForm extends AbstractDataForm {
             }
         });
 
+        //endregion
+
         settingsBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 tabbedPane.setSelectedIndex(SETTINGS_TAB_INDEX);
             }
         });
 
-        //endregion
+        fillComboBoxes();
 
     }
 
@@ -358,6 +351,22 @@ public class MainForm extends AbstractDataForm {
         /*Exit program if session not created*/
         if (session == null) {
             System.exit(0);
+        }
+    }
+
+    private void fillComboBoxes() {
+        List<ScreenResolution> resolutions = SCREEN_RESOLUTION_DAO.findAll();
+        List<MatrixType> types = MATRIX_TYPE_DAO.findAll();
+
+        resolutionCb.removeAllItems();
+        matrixCb.removeAllItems();
+
+        for (ScreenResolution resolution : resolutions) {
+            resolutionCb.addItem(resolution);
+        }
+
+        for (MatrixType type : types) {
+            matrixCb.addItem(type);
         }
     }
 
