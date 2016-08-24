@@ -16,6 +16,24 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `cluster`
+--
+
+DROP TABLE IF EXISTS `cluster`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cluster` (
+  `id` bigint(20) NOT NULL,
+  `description` longtext NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `monitor_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKnjita115gpoppj96g5fjyerg0` (`monitor_id`),
+  CONSTRAINT `FKnjita115gpoppj96g5fjyerg0` FOREIGN KEY (`monitor_id`) REFERENCES `monitor` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `cluster`
 --
 
@@ -25,14 +43,54 @@ LOCK TABLES `cluster` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `matrixtype`
+--
+
+DROP TABLE IF EXISTS `matrixtype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `matrixtype` (
+  `id` bigint(20) NOT NULL,
+  `description` varchar(200) DEFAULT NULL,
+  `name` varchar(100) NOT NULL,
+  `weight` double NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `matrixtype`
 --
 
 LOCK TABLES `matrixtype` WRITE;
 /*!40000 ALTER TABLE `matrixtype` DISABLE KEYS */;
-INSERT INTO `matrixtype` VALUES (1,'IPS','IPS'),(2,'TN+Film','TN+Film'),(3,'VA','VA'),(4,'PLS','PLS'),(5,'AH-IPS','AH-IPS'),(6,'VA(AMVA+)','VA(AMVA+)'),(7,'IPS(e-IPS)','IPS(e-IPS)');
+INSERT INTO `matrixtype` VALUES (1,'Лучшая цветопередача; Cамый большой угол обзора; Высокая цена; Большое время отклика','IPS',3),(2,'Очень маленькое время отклика; Доступная цена; Плохая цветопередача; Маленький угол обзора; Высокая вероятность появления битых пикселей','TN+Film',1),(3,'Качественные цвета; Неплохое время отклика; Более высокая цена; Искажение цветов при большом угле обзора','VA',2),(4,'Более высокая плотность пикселей, высокая яркость, меньшее энергопотребление, низкий цветовой охват, более низкая контрастность по сравнению с IPS','PLS',0.1),(5,'Модификация матрицы для дисплеев с высоким разрешением (UHD), аналог H-IPS','AH-IPS',0),(6,'Cледующее поколение производства, уменьшение времени отклика, улучшение цветовой передачи.','VA(AMVA+)',0),(7,'Одно из улучшений IPS технологий увеличение яркости и уменьшение времени отклика','IPS(e-IPS)',0);
 /*!40000 ALTER TABLE `matrixtype` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `monitor`
+--
+
+DROP TABLE IF EXISTS `monitor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `monitor` (
+  `id` bigint(20) NOT NULL,
+  `diagonal` double NOT NULL,
+  `guarantee_period` int(11) NOT NULL,
+  `is_proto` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `price` decimal(19,2) NOT NULL,
+  `matrix_type_id` bigint(20) DEFAULT NULL,
+  `screen_resolution_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKoty4de2cm8g23fbj3aujbtwk2` (`matrix_type_id`),
+  KEY `FKsff2wwfqf8d6bsds8s1741kk6` (`screen_resolution_id`),
+  CONSTRAINT `FKoty4de2cm8g23fbj3aujbtwk2` FOREIGN KEY (`matrix_type_id`) REFERENCES `matrixtype` (`id`),
+  CONSTRAINT `FKsff2wwfqf8d6bsds8s1741kk6` FOREIGN KEY (`screen_resolution_id`) REFERENCES `screenresolution` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `monitor`
@@ -44,6 +102,24 @@ INSERT INTO `monitor` VALUES (1,21.5,36,0,'LG 22MP48HQ-P',224.25,1,1),(2,24,36,0
 /*!40000 ALTER TABLE `monitor` ENABLE KEYS */;
 UNLOCK TABLES;
 
+--
+-- Table structure for table `screenresolution`
+--
+
+DROP TABLE IF EXISTS `screenresolution`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `screenresolution` (
+  `id` bigint(20) NOT NULL,
+  `x` int(11) NOT NULL,
+  `y` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `screenresolution`
+--
 
 LOCK TABLES `screenresolution` WRITE;
 /*!40000 ALTER TABLE `screenresolution` DISABLE KEYS */;
@@ -60,4 +136,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-23 17:33:26
+-- Dump completed on 2016-08-24 16:41:33
