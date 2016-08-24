@@ -16,24 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `cluster`
---
-
-DROP TABLE IF EXISTS `cluster`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cluster` (
-  `id` bigint(20) NOT NULL,
-  `description` longtext NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `monitor_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKnjita115gpoppj96g5fjyerg0` (`monitor_id`),
-  CONSTRAINT `FKnjita115gpoppj96g5fjyerg0` FOREIGN KEY (`monitor_id`) REFERENCES `monitor` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `cluster`
 --
 
@@ -41,22 +23,6 @@ LOCK TABLES `cluster` WRITE;
 /*!40000 ALTER TABLE `cluster` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cluster` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `matrixtype`
---
-
-DROP TABLE IF EXISTS `matrixtype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `matrixtype` (
-  `id` bigint(20) NOT NULL,
-  `description` varchar(200) DEFAULT NULL,
-  `name` varchar(100) NOT NULL,
-  `weight` double NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `matrixtype`
@@ -69,30 +35,6 @@ INSERT INTO `matrixtype` VALUES (1,'Лучшая цветопередача; Cа
 UNLOCK TABLES;
 
 --
--- Table structure for table `monitor`
---
-
-DROP TABLE IF EXISTS `monitor`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `monitor` (
-  `id` bigint(20) NOT NULL,
-  `diagonal` double NOT NULL,
-  `guarantee_period` int(11) NOT NULL,
-  `is_proto` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `price` decimal(19,2) NOT NULL,
-  `matrix_type_id` bigint(20) DEFAULT NULL,
-  `screen_resolution_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKoty4de2cm8g23fbj3aujbtwk2` (`matrix_type_id`),
-  KEY `FKsff2wwfqf8d6bsds8s1741kk6` (`screen_resolution_id`),
-  CONSTRAINT `FKoty4de2cm8g23fbj3aujbtwk2` FOREIGN KEY (`matrix_type_id`) REFERENCES `matrixtype` (`id`),
-  CONSTRAINT `FKsff2wwfqf8d6bsds8s1741kk6` FOREIGN KEY (`screen_resolution_id`) REFERENCES `screenresolution` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `monitor`
 --
 
@@ -101,21 +43,6 @@ LOCK TABLES `monitor` WRITE;
 INSERT INTO `monitor` VALUES (1,21.5,36,0,'LG 22MP48HQ-P',224.25,1,1),(2,24,36,0,'BenQ XL2411Z',572.64,2,1),(3,18.5,24,0,'AOC e970Swn',142.65,1,2),(4,18.5,24,0,'Philips 193V5LSB2/10',147.45,2,2),(5,31.5,36,0,'NEC PA322UHD-BK-2',7306.87,1,3),(6,27,36,0,'Dell UltraSharp UP2715K',4976.21,1,4),(7,19.5,36,0,'BenQ GL2023A',158.50,2,5),(8,27,36,0,'Samsung C27F390FHI ',632.00,3,1),(9,22,24,0,'ViewSonic VX2276-smhd',346.55,1,1),(10,31.5,12,0,'Samsung C32F391FWI ',735.73,3,1),(11,34,36,0,'LG 34UC98-W',2128.30,1,6),(12,19,36,0,'BenQ BL912',308.78,2,7),(13,24,36,0,'Iiyama ProLite X2483HSU-B1',395.55,6,1),(14,23.6,24,0,'Samsung S24D590PL',374.38,4,1),(15,23.6,24,0,'Samsung T24D391EX',448.78,4,1),(16,23,24,0,'Philips 234E5QHSB/00',380.56,5,1),(17,27,24,0,'AOC i2769Vm',439.56,5,1),(18,21.5,36,0,'LG 22MP67HQ',230.10,5,1),(19,29.8,24,0,'NEC SpectraView Reference 302',6370.92,5,8),(20,31,36,0,'EIZO ColorEdge CG318-4K',10656.89,1,9),(21,17,12,0,'NEC MultiSync E171M',136.50,2,7);
 /*!40000 ALTER TABLE `monitor` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `screenresolution`
---
-
-DROP TABLE IF EXISTS `screenresolution`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `screenresolution` (
-  `id` bigint(20) NOT NULL,
-  `x` int(11) NOT NULL,
-  `y` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `screenresolution`
