@@ -1,75 +1,97 @@
 package by.gstu.computerdetails.algorithm;
 
-import java.util.ArrayList;
 import java.util.List;
 
-abstract class ClusterAnalysisMethod {
+public class ClusterAnalysisMethod {
 
-    protected static final int FEATURES_COUNT = 5;
+    protected final int OBJECT_COUNT;
+    protected final int SIGN_COUNT;
 
-    private List<NormalizeObject> _X;
+    protected List<NormalizeObject> objects;
 
-    protected ClusterAnalysisMethod(List<NormalizeObject> objects) {
-        _X = objects;
+    public ClusterAnalysisMethod(List<NormalizeObject> objects) {
+        if (objects.size() < 1) {
+            throw new IllegalArgumentException("Object list is empty");
+        }
+        this.objects = objects;
+
+        OBJECT_COUNT = objects.size();
+        SIGN_COUNT = objects.get(0).signCount();
     }
 
-    protected static double[][] GetDistance(List<double[]> P, List<double[]> X) {
-        double[][] distances = new double[P.size()][X.size()];
-        for (int i = 0; i < P.size(); i++) {
-            for (int j = 0; j < X.size(); j++) {
-                double sum = 0;
-                for (int k = 0; k < FEATURES_COUNT; k++) {
-                    sum += (X.get(j)[k] - P.get(i)[k]) * (X.get(j)[k] - P.get(i)[k]);
-                }
-                distances[i][j] = Math.sqrt(sum);
+    public double[][] normalize() {
+        double[] A = new double[SIGN_COUNT];
+        for (int i = 0; i < SIGN_COUNT; i++) {
+            double sum = 0;
+            for (NormalizeObject object : objects) {
+                double[] signs = object.getSignValues();
+                sum += signs[i];
+            }
+            A[i] = sum / OBJECT_COUNT;
+        }
+
+        double[] sigma = new double[SIGN_COUNT];
+        for (int i = 0; i < SIGN_COUNT; i++) {
+            double sum = 0;
+            for (NormalizeObject object : objects) {
+                double[] signs = object.getSignValues();
+                sum += (signs[i] - A[i]) * (signs[i] - A[i]);
+            }
+            sigma[i] = Math.sqrt(sum / (OBJECT_COUNT - 1));
+        }
+
+        double[][] normalizeValues = new double[OBJECT_COUNT][SIGN_COUNT];
+        for (int i = 0; i < OBJECT_COUNT; i++) {
+            double[] signs = objects.get(i).getSignValues();
+            for (int j = 0; j < SIGN_COUNT; j++) {
+                normalizeValues[i][j] = (signs[j] - A[j]) / sigma[j];
             }
         }
 
-        return distances;
+        return normalizeValues;
     }
 
-    protected static List<List<Integer>> FindObjectClasses(double[][] D) {
-        List<List<Integer>> classes = new ArrayList<List<Integer>>(D.length);
-
-        for (int j = 0; j < D[0].length; j++) {
-            int number = 0;
-            double minP = Double.MAX_VALUE;
-            for (int i = 0; i < D.length; i++) {
-                if (D[i][j] <= minP) {
-                    minP = D[i][j];
-                    number = i;
-                }
+    protected void printMatrix(double[][] normalizeByMax) {
+        for (double[] doubles : normalizeByMax) {
+            for (double aDouble : doubles) {
+                System.out.print(aDouble + " ");
             }
+            System.out.println();
+        }
+        System.out.println();
+    }
 
-           /* if (classes.get(number) == null) {
-                List<Integer> integers = classes.get(number);
-                integers = new ArrayList<Integer>();
-            }*/
+    protected void print(double[] maxValues) {
+        for (double maxValue : maxValues) {
+            System.out.println(maxValue + "; ");
+        }
+        System.out.println();
+    }
 
-            if (classes.get(number) == null) {
+    protected double[][] normalizeByMax(List<NormalizeObject> objects, double[] maxValues) {
+        double[][] result = new double[objects.size()][SIGN_COUNT];
 
+        for (int i = 0, objectsSize = objects.size(); i < objectsSize; i++) {
+            double[] signs = objects.get(i).getSignValues();
+            for (int j = 0; j < SIGN_COUNT; j++) {
+                result[i][j] = signs[j] / maxValues[j];
             }
-            classes.get(number).add(j);
         }
 
-        return classes;
+        return result;
     }
 
-    public List<NormalizeObject> getObjects() {
-        return _X;
-    }
-
-    protected double[] GetMaxValues() {
-        double[] maxValues = new double[FEATURES_COUNT];
-
-        for (int i = 0; i < maxValues.length; i++) {
+    protected double[] findMaxSignValue(List<NormalizeObject> objects) {
+        double[] maxValues = new double[SIGN_COUNT];
+        for (int i = 0; i < SIGN_COUNT; i++) {
             maxValues[i] = Double.MIN_VALUE;
         }
-        for (NormalizeObject _object : _X) {
-            double[] features = _object.getSignValues();
-            for (int i = 0; i < FEATURES_COUNT; i++) {
-                if (maxValues[i] < features[i]) {
-                    maxValues[i] = features[i];
+
+        for (NormalizeObject object : objects) {
+            double[] signs = object.getSignValues();
+            for (int i = 0; i < SIGN_COUNT; i++) {
+                if (signs[i] > maxValues[i]) {
+                    maxValues[i] = signs[i];
                 }
             }
         }
@@ -77,22 +99,4 @@ abstract class ClusterAnalysisMethod {
         return maxValues;
     }
 
-    protected List<double[]> Normalize(List<NormalizeObject> x) {
-        List<double[]> values = new ArrayList<double[]>();
-
-        double[] maxValues = GetMaxValues();
-
-        for (NormalizeObject xi : x) {
-            double[] features = xi.getSignValues();
-            double[] values_i = new double[FEATURES_COUNT];
-            for (int k = 0; k < FEATURES_COUNT; k++) {
-                values_i[k] = features[k] / maxValues[k];
-            }
-            values.add(values_i);
-        }
-
-        return values;
-    }
-
-    public abstract List<List<Integer>> Clustering();
 }

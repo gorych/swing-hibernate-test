@@ -37,6 +37,12 @@ public class Cluster extends BaseEntity {
         this.description = description;
     }
 
+    public Cluster(String name, String description, Monitor prototype) {
+        this.name = name;
+        this.description = description;
+        this.prototype = prototype;
+    }
+
     @TableColumn(name = "ID", index = 0, hidden = true)
     public long getId() {
         return id;

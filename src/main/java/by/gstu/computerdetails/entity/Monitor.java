@@ -56,6 +56,11 @@ public class Monitor extends BaseEntity implements NormalizeObject {
     public Monitor() {
     }
 
+    public Monitor(BigDecimal price, double diagonal) {
+        this.price = price;
+        this.diagonal = diagonal;
+    }
+
     public Monitor(String name, BigDecimal price, double diagonal, int guaranteePeriod, ScreenResolution screenResolution, MatrixType matrixType) {
         setName(name);
         setPrice(price);
@@ -208,13 +213,15 @@ public class Monitor extends BaseEntity implements NormalizeObject {
 
 
     public double[] getSignValues() {
-        int resolutionSignVal = screenResolution.getX() + screenResolution.getY();
+//        int resolutionSignVal = screenResolution.getX() + screenResolution.getY();
         return new double[]{
-                price.doubleValue(), guaranteePeriod, diagonal, resolutionSignVal, matrixType.getWeight()
+                //price.doubleValue(), guaranteePeriod, diagonal, resolutionSignVal, matrixType.getWeight()
+                price.doubleValue(), diagonal
         };
     }
 
     public int signCount() {
-        return 5;
+        //return 5;
+        return 2;
     }
 }

@@ -1,5 +1,6 @@
 package by.gstu.computerdetails.form;
 
+import by.gstu.computerdetails.algorithm.ClusterAnalysisMethod;
 import by.gstu.computerdetails.algorithm.K_Means;
 import by.gstu.computerdetails.algorithm.NormalizeObject;
 import by.gstu.computerdetails.config.FormConfig;
@@ -17,6 +18,7 @@ import org.hibernate.Session;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,15 +87,26 @@ public class MainForm extends AbstractDataForm {
                 List<Cluster> clusters = CLUSTER_DAO.findAll();
                 List<Monitor> monitors = MONITOR_DAO.findAll();
 
-                List<NormalizeObject> objects = new ArrayList<NormalizeObject>();
-                for (Monitor monitor : monitors) {
-                    objects.add(monitor);
-                }
+                List<Cluster> clusters1 = new ArrayList<Cluster>() {{
+                    add(new Cluster("k1", "d1", new Monitor(new BigDecimal(13187), 1)));
+                    add(new Cluster("k2", "d2", new Monitor(new BigDecimal(15145), 7)));
+                    add(new Cluster("k3", "d3", new Monitor(new BigDecimal(15596), 4)));
+                }};
 
-                K_Means kMeans = new K_Means(objects, clusters);
-                List<List<Integer>> clustering = kMeans.Clustering();
+                List<NormalizeObject> objects = new ArrayList<NormalizeObject>() {{
+                    add(new Monitor(new BigDecimal(16476), 4));
+                    add(new Monitor(new BigDecimal(17081), 4));
+                    add(new Monitor(new BigDecimal(13827), 5));
+                    add(new Monitor(new BigDecimal(13187), 1));
+                    add(new Monitor(new BigDecimal(11793), 3));
+                    add(new Monitor(new BigDecimal(16728), 4));
+                    add(new Monitor(new BigDecimal(10386), 2));
+                    add(new Monitor(new BigDecimal(15145), 7));
+                    add(new Monitor(new BigDecimal(15596), 4));
+                }};
 
-                System.out.println(clustering);
+                K_Means kMeans = new K_Means(objects, clusters1);
+                kMeans.run();
             }
         });
 

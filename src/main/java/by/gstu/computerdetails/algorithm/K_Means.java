@@ -8,64 +8,43 @@ import java.util.List;
 public class K_Means extends ClusterAnalysisMethod {
 
     private List<Cluster> clusters;
+    private List<NormalizeObject> prototypes;
+    private int protoCount;
 
     public K_Means(List<NormalizeObject> objects, List<Cluster> clusters) {
         super(objects);
         this.clusters = clusters;
-    }
 
-    private static boolean IsEqualPrototypes(List<double[]> prevP, List<double[]> curP) {
-        for (int i = 0; i < prevP.size(); i++) {
-            for (int j = 0; j < prevP.get(i).length; j++) {
-                final double EPS = 0.0001;
-                if (Math.abs(prevP.get(i)[j] - curP.get(i)[j]) > EPS) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private static List<double[]> GetNewPrototypes(List<List<Integer>> classes, List<double[]> X) {
-        List<double[]> prototypes = new ArrayList<double[]>();
-        for (List<Integer> clazz : classes) {
-            double[] values_i = new double[FEATURES_COUNT];
-            if (clazz == null) continue;
-
-            for (int objNumber : clazz) {
-                for (int k = 0; k < FEATURES_COUNT; k++) {
-                    values_i[k] += X.get(objNumber)[k];
-                }
-            }
-
-            for (int j = 0; j < values_i.length; j++) {
-                values_i[j] /= clazz.size();
-            }
-            prototypes.add(values_i);
-        }
-        return prototypes;
-    }
-
-    public List<List<Integer>> Clustering() {
-        List<NormalizeObject> prototypes = new ArrayList<NormalizeObject>();
+        prototypes = new ArrayList<NormalizeObject>();
         for (Cluster cluster : clusters) {
             prototypes.add(cluster.getPrototype());
         }
 
-        List<double[]> P = Normalize(prototypes);
-        List<double[]> X = Normalize(getObjects());
-
-        while (true) {
-            double[][] D = GetDistance(P, X);
-            List<List<Integer>> classes = FindObjectClasses(D);
-            List<double[]> newP = GetNewPrototypes(classes, X);
-
-            if (IsEqualPrototypes(P, newP)) {
-                return classes;
-            }
-
-            P.clear();
-            P = newP;
-        }
+        this.protoCount = prototypes.size();
     }
+
+    public void run() {
+        double[] X_MAX = findMaxSignValue(objects);
+        double[] P_MAX = findMaxSignValue(prototypes);
+
+        double[][] X = normalizeByMax(objects, X_MAX);
+        double[][] P = normalizeByMax(prototypes, P_MAX);
+
+        double[][] distances = new double[protoCount][OBJECT_COUNT];
+        for (int i = 0; i < protoCount; i++) {
+            for (int j = 0; j < OBJECT_COUNT; j++) {
+                double sum = 0;
+                for (int k = 0; k < SIGN_COUNT; k++) {
+                    sum += (X[j][k] - P[i][k]) * (X[j][k] - P[i][k]);
+                }
+                distances[i][j] = Math.sqrt(sum);
+            }
+        }
+
+        printMatrix(distances);
+
+        //double[][] normalizeValues = normalize(objects);
+    }
+
+
 }
