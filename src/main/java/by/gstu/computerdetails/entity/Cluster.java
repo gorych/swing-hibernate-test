@@ -98,7 +98,6 @@ public class Cluster extends BaseEntity {
         Cluster cluster = (Cluster) o;
 
         return new EqualsBuilder()
-                .append(id, cluster.id)
                 .append(name, cluster.name)
                 .append(prototype, cluster.prototype)
                 .isEquals();
@@ -107,7 +106,6 @@ public class Cluster extends BaseEntity {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(id)
                 .append(name)
                 .append(prototype)
                 .toHashCode();

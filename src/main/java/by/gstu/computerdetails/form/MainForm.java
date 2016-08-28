@@ -1,6 +1,5 @@
 package by.gstu.computerdetails.form;
 
-import by.gstu.computerdetails.algorithm.ClusterAnalysisMethod;
 import by.gstu.computerdetails.algorithm.K_Means;
 import by.gstu.computerdetails.algorithm.NormalizeObject;
 import by.gstu.computerdetails.config.FormConfig;
@@ -21,6 +20,7 @@ import java.awt.event.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MainForm extends AbstractDataForm {
 
@@ -106,7 +106,11 @@ public class MainForm extends AbstractDataForm {
                 }};
 
                 K_Means kMeans = new K_Means(objects, clusters1);
-                kMeans.run();
+                Map<Cluster, List<Integer>> run = kMeans.divide();
+                for (Cluster cluster : run.keySet()) {
+                    List<Integer> integers = run.get(cluster);
+                    System.out.println(cluster.getName() + " - " + integers);
+                }
             }
         });
 

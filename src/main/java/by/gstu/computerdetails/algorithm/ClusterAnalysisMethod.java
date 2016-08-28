@@ -1,5 +1,6 @@
 package by.gstu.computerdetails.algorithm;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClusterAnalysisMethod {
@@ -68,14 +69,17 @@ public class ClusterAnalysisMethod {
         System.out.println();
     }
 
-    protected double[][] normalizeByMax(List<NormalizeObject> objects, double[] maxValues) {
-        double[][] result = new double[objects.size()][SIGN_COUNT];
+    protected List<double[]> normalizeByMax(List<NormalizeObject> objects, double[] maxValues) {
+        //double[][] result = new double[objects.size()][SIGN_COUNT];
+        List<double[]> result = new ArrayList<double[]>();
 
         for (int i = 0, objectsSize = objects.size(); i < objectsSize; i++) {
             double[] signs = objects.get(i).getSignValues();
+            double[] values_i = new double[SIGN_COUNT];
             for (int j = 0; j < SIGN_COUNT; j++) {
-                result[i][j] = signs[j] / maxValues[j];
+                values_i[j] = signs[j] / maxValues[j];
             }
+            result.add(values_i);
         }
 
         return result;
