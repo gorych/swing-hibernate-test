@@ -8,9 +8,9 @@ public class ClusterAnalysisMethod {
     protected final int OBJECT_COUNT;
     protected final int SIGN_COUNT;
 
-    protected List<NormalizeObject> objects;
+    protected List<? extends NormalizeObject> objects;
 
-    public ClusterAnalysisMethod(List<NormalizeObject> objects) {
+    public ClusterAnalysisMethod(List<? extends NormalizeObject> objects) {
         if (objects.size() < 1) {
             throw new IllegalArgumentException("Object list is empty");
         }
@@ -69,12 +69,11 @@ public class ClusterAnalysisMethod {
         System.out.println();
     }
 
-    protected List<double[]> normalizeByMax(List<NormalizeObject> objects, double[] maxValues) {
-        //double[][] result = new double[objects.size()][SIGN_COUNT];
+    protected List<double[]> normalizeByMax(List<? extends NormalizeObject> objects, double[] maxValues) {
         List<double[]> result = new ArrayList<double[]>();
 
-        for (int i = 0, objectsSize = objects.size(); i < objectsSize; i++) {
-            double[] signs = objects.get(i).getSignValues();
+        for (NormalizeObject object : objects) {
+            double[] signs = object.getSignValues();
             double[] values_i = new double[SIGN_COUNT];
             for (int j = 0; j < SIGN_COUNT; j++) {
                 values_i[j] = signs[j] / maxValues[j];
@@ -85,7 +84,7 @@ public class ClusterAnalysisMethod {
         return result;
     }
 
-    protected double[] findMaxSignValue(List<NormalizeObject> objects) {
+    protected double[] findMaxSignValue(List<? extends NormalizeObject> objects) {
         double[] maxValues = new double[SIGN_COUNT];
         for (int i = 0; i < SIGN_COUNT; i++) {
             maxValues[i] = Double.MIN_VALUE;

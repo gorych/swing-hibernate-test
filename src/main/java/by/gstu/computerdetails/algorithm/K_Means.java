@@ -13,7 +13,7 @@ public class K_Means extends ClusterAnalysisMethod {
     private List<NormalizeObject> prototypes;
     private int protoCount;
 
-    public K_Means(List<NormalizeObject> objects, List<Cluster> clusters) {
+    public K_Means(List<? extends NormalizeObject> objects, List<Cluster> clusters) {
         super(objects);
         this.clusters = clusters;
 
@@ -59,10 +59,11 @@ public class K_Means extends ClusterAnalysisMethod {
     }
 
     private List<double[]> findNewPrototypes(Map<Cluster, List<Integer>> clusterMap, List<double[]> X) {
-
-        //bug is here
-
         List<double[]> prototypes = new ArrayList<double[]>();
+        for (int i = 0; i < clusters.size(); i++) {
+            prototypes.add(new double[]{});
+        }
+
         for (Cluster cluster : clusterMap.keySet()) {
             List<Integer> clazz = clusterMap.get(cluster);
 
@@ -80,9 +81,19 @@ public class K_Means extends ClusterAnalysisMethod {
             for (int j = 0; j < values_i.length; j++) {
                 values_i[j] /= clazz.size();
             }
-            prototypes.add(values_i);
+            addValuesToProto(prototypes, cluster, values_i);
         }
         return prototypes;
+    }
+
+    private void addValuesToProto(List<double[]> prototypes, Cluster cluster, double[] values_i) {
+        for (int index = 0; index < clusters.size(); index++) {
+            if (clusters.get(index).equals(cluster)) {
+                prototypes.add(index + 1, values_i);
+                prototypes.remove(index);
+                break;
+            }
+        }
     }
 
     private Map<Cluster, List<Integer>> getClusterMap(double[][] distances) {
@@ -123,6 +134,5 @@ public class K_Means extends ClusterAnalysisMethod {
         }
         return distances;
     }
-
 
 }

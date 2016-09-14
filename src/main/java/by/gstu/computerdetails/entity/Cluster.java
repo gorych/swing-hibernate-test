@@ -1,7 +1,7 @@
 package by.gstu.computerdetails.entity;
 
+import by.gstu.computerdetails.algorithm.NormalizeObject;
 import by.gstu.computerdetails.annotation.TableColumn;
-import com.sun.istack.internal.NotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
