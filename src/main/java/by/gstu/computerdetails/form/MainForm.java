@@ -2,6 +2,10 @@ package by.gstu.computerdetails.form;
 
 import by.gstu.computerdetails.algorithm.K_Means;
 import by.gstu.computerdetails.algorithm.NormalizeObject;
+import by.gstu.computerdetails.algorithm.decisionfunction.DecisionFunctionBuilder;
+import by.gstu.computerdetails.algorithm.decisionfunction.DecisionFunctionRecognizer;
+import by.gstu.computerdetails.algorithm.decisionfunction.FunctionBuilder;
+import by.gstu.computerdetails.algorithm.decisionfunction.Recognizer;
 import by.gstu.computerdetails.config.FormConfig;
 import by.gstu.computerdetails.config.HibernateUtil;
 import by.gstu.computerdetails.entity.Cluster;
@@ -19,6 +23,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -105,12 +110,29 @@ public class MainForm extends AbstractDataForm {
                     add(new Monitor(new BigDecimal(15596), 4));
                 }};
 
-                K_Means kMeans = new K_Means(objects, clusters1);
-                Map<Cluster, List<Integer>> run = kMeans.divide();
-                for (Cluster cluster : run.keySet()) {
-                    List<Integer> integers = run.get(cluster);
+                K_Means kMeans = new K_Means(monitors, clusters);
+                Map<Cluster, List<Integer>> clusterMap = kMeans.divide();
+                for (Cluster cluster : clusterMap.keySet()) {
+                    List<Integer> integers = clusterMap.get(cluster);
                     System.out.println(cluster.getName() + " - " + integers);
                 }
+
+                double[][] typicalProjects = new double[clusters.size()][];
+                int i = 0;
+                for (Cluster cluster : clusterMap.keySet()) {
+                    List<Integer> integers = clusterMap.get(cluster);
+
+                    for (Integer j : integers) {
+                        Monitor monitor = monitors.get(j);
+                        typicalProjects[i] = new double[]
+                    }
+                    i++;
+                }
+
+                FunctionBuilder fb3 = new DecisionFunctionBuilder(typicalProjects, projectedObject2);
+                double[] D3 = fb3.build();
+                Recognizer r3 = new DecisionFunctionRecognizer(D3);
+                r3.printResult("Expended storage decision function result");
             }
         });
 
