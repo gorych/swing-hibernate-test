@@ -1,19 +1,22 @@
 package by.gstu.computerdetails.algorithm.decisionfunction;
 
 import by.gstu.computerdetails.algorithm.NormalizeObject;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.util.List;
 
 public class FunctionBuilder {
 
-    private NormalizeObject[][] projects;
+    private List<List<NormalizeObject>> projects;
     private NormalizeObject projectedObject;
 
-    public FunctionBuilder(NormalizeObject[][] typicalProjects,
+    public FunctionBuilder(List<List<NormalizeObject>> typicalProjects,
                            NormalizeObject projectedObject) {
         this.projects = typicalProjects;
         this.projectedObject = projectedObject;
     }
 
-    public NormalizeObject[][] getProjects() {
+    public List<List<NormalizeObject>> getProjects() {
         return projects;
     }
 
@@ -34,7 +37,7 @@ public class FunctionBuilder {
             maxValues[i] = Integer.MIN_VALUE;
         }
 
-        for (NormalizeObject[] projectList : projects) {
+        for (List<NormalizeObject> projectList : projects) {
             for (NormalizeObject project : projectList) {
                 double[] features = project.getSignValues();
                 for (int i = 0; i < FEATURES_COUNT; i++) {
@@ -51,13 +54,13 @@ public class FunctionBuilder {
     protected double[][] getDimensionlessValues() {
         final int FEATURES_COUNT = getFeaturesCount();
 
-        double[][] values = new double[projects[0].length * projects.length][FEATURES_COUNT];
+        double[][] values = new double[projects.get(0).size() * projects.size()][FEATURES_COUNT];
         double[] maxValues = getMaxValues();
 
-        for (int i = 0; i < projects.length; i++) {
-            for (int j = 0; j < projects[i].length; j++) {
-                int index = projects[0].length * i + j;
-                double[] features = projects[i][j].getSignValues();
+        for (int i = 0; i < projects.size(); i++) {
+            for (int j = 0; j < projects.get(i).size(); j++) {
+                int index = projects.get(0).size() * i + j;
+                double[] features = projects.get(i).get(j).getSignValues();
 
                 for (int k = 0; k < FEATURES_COUNT; k++) {
                     values[index][k] = features[k] / maxValues[k];
@@ -71,21 +74,21 @@ public class FunctionBuilder {
     protected double[][] getHypotheticFeatureValues() {
         final int FEATURES_COUNT = getFeaturesCount();
 
-        double[][] values = new double[projects.length][FEATURES_COUNT];
+        double[][] values = new double[projects.size()][FEATURES_COUNT];
         double[][] dimValues = getDimensionlessValues();
 
-        for (int i = 0; i < projects.length; i++) {
+        for (int i = 0; i < projects.size(); i++) {
             double[] sums = new double[FEATURES_COUNT];
 
-            for (int j = 0; j < projects[i].length; j++) {
-                int index = projects[0].length * i + j;
+            for (int j = 0; j < projects.get(i).size(); j++) {
+                int index = projects.get(0).size() * i + j;
                 for (int k = 0; k < FEATURES_COUNT; k++) {
                     sums[k] += dimValues[index][k];
                 }
             }
 
             for (int j = 0; j < sums.length; j++) {
-                values[i][j] = sums[j] / projects.length;
+                values[i][j] = sums[j] / projects.size();
             }
         }
 
@@ -106,8 +109,8 @@ public class FunctionBuilder {
         return values;
     }
 
-    public double[] build() {
-        double[][] hypotheticValues = getHypotheticFeatureValues();
+    public List<Double> build() {
+        /*double[][] hypotheticValues = getHypotheticFeatureValues();
         double[] X = getDimensionlessValues(projectedObject);
 
         double D[] = new double[hypotheticValues.length];
@@ -120,7 +123,8 @@ public class FunctionBuilder {
             }
             D[i] = Di - Pi;
         }
-        return D;
+        return new ArrayList<Double>().add(D);*/
+        throw new NotImplementedException();
     }
 
 }

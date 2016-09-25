@@ -117,19 +117,18 @@ public class MainForm extends AbstractDataForm {
                     System.out.println(cluster.getName() + " - " + integers);
                 }
 
-                double[][] typicalProjects = new double[clusters.size()][];
-                int i = 0;
+                List<List<NormalizeObject>> typicalProjects = new ArrayList<List<NormalizeObject>>();
                 for (Cluster cluster : clusterMap.keySet()) {
-                    List<Integer> integers = clusterMap.get(cluster);
-
-                    for (Integer j : integers) {
-                        Monitor monitor = monitors.get(j);
-                        typicalProjects[i] = new double[]
+                    List<Integer> indexes = clusterMap.get(cluster);
+                    List<NormalizeObject> clusterObjects = new ArrayList<NormalizeObject>();
+                    for (Integer index : indexes) {
+                        Monitor monitor = monitors.get(index);
+                        clusterObjects.add(monitor);
                     }
-                    i++;
+                    typicalProjects.add(clusterObjects);
                 }
 
-                FunctionBuilder fb3 = new DecisionFunctionBuilder(typicalProjects, projectedObject2);
+                FunctionBuilder fb3 = new DecisionFunctionBuilder(typicalProjects, null);
                 double[] D3 = fb3.build();
                 Recognizer r3 = new DecisionFunctionRecognizer(D3);
                 r3.printResult("Expended storage decision function result");
