@@ -213,15 +213,15 @@ public class Monitor extends BaseEntity implements NormalizeObject {
 
 
     public double[] getSignValues() {
-//        int resolutionSignVal = screenResolution.getX() + screenResolution.getY();
+        int resolutionSum = screenResolution.getX() + screenResolution.getY();
         return new double[]{
-                //price.doubleValue(), guaranteePeriod, diagonal, resolutionSignVal, matrixType.getWeight()
-                price.doubleValue(), diagonal
+                price.doubleValue(), guaranteePeriod, diagonal, resolutionSum, matrixType.getWeight()
+                // price.doubleValue(), diagonal
         };
     }
 
     public int signCount() {
-        //return 5;
-        return 2;
+        return 5;
+        //return 2;
     }
 }

@@ -26,11 +26,11 @@ public class K_Means extends ClusterAnalysisMethod {
     }
 
     public Map<Cluster, List<Integer>> divide() {
-        double[] X_MAX = findMaxSignValue(objects);
-        double[] P_MAX = findMaxSignValue(prototypes);
+        double[] X_MAX = AlgorithmHelper.findMaxSignValue(objects);
+        double[] P_MAX = AlgorithmHelper.findMaxSignValue(prototypes);
 
-        List<double[]> X = normalizeByMax(objects, X_MAX);
-        List<double[]> P = normalizeByMax(prototypes, P_MAX);
+        List<double[]> X = AlgorithmHelper.normalizeByMax(objects, X_MAX);
+        List<double[]> P = AlgorithmHelper.normalizeByMax(prototypes, P_MAX);
 
         while (true) {
             double[][] distances = getDistances(X, P);

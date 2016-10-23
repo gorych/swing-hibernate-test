@@ -1,6 +1,5 @@
 package by.gstu.computerdetails.entity;
 
-import by.gstu.computerdetails.algorithm.NormalizeObject;
 import by.gstu.computerdetails.annotation.TableColumn;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -84,9 +83,14 @@ public class Cluster extends BaseEntity {
         this.prototype = prototype;
     }
 
-    @TableColumn(name = "Прототип", index = 3)
+    @TableColumn(name = "Характеристики кластера", index = 3)
     public String getStringPrototype() {
-        return prototype.getDiagonal()+"";
+        return
+                "Цена = " + prototype.getPrice() +
+                "; Разр. экрана = " + prototype.getFormatScreenResolution() +
+                "; Матрица = " + prototype.getMatrixType() +
+                "; Гар. период = " + prototype.getGuaranteePeriod() +
+                "; Диагональ = " + prototype.getDiagonal();
     }
 
     @Override

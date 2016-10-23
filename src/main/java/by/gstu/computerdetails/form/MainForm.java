@@ -1,11 +1,9 @@
 package by.gstu.computerdetails.form;
 
+import by.gstu.computerdetails.algorithm.AlgorithmHelper;
+import by.gstu.computerdetails.algorithm.DecisionFunctionBuilder;
 import by.gstu.computerdetails.algorithm.K_Means;
-import by.gstu.computerdetails.algorithm.NormalizeObject;
-import by.gstu.computerdetails.algorithm.decisionfunction.DecisionFunctionBuilder;
-import by.gstu.computerdetails.algorithm.decisionfunction.DecisionFunctionRecognizer;
-import by.gstu.computerdetails.algorithm.decisionfunction.FunctionBuilder;
-import by.gstu.computerdetails.algorithm.decisionfunction.Recognizer;
+import by.gstu.computerdetails.algorithm.Result;
 import by.gstu.computerdetails.config.FormConfig;
 import by.gstu.computerdetails.config.HibernateUtil;
 import by.gstu.computerdetails.entity.Cluster;
@@ -23,7 +21,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -82,56 +79,77 @@ public class MainForm extends AbstractDataForm {
         final Component matrixTab = tabbedPane.getComponent(3);
         final Component settingsTab = tabbedPane.getComponent(4);
 
+
+        analysisBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                List<Cluster> clusters = CLUSTER_DAO.findAll();
+                List<Monitor> monitors = MONITOR_DAO.findAll();
+
+                if (monitors.size() < 1 || clusters.size() < 2) {
+                    return;
+                }
+
+                K_Means kMeans = new K_Means(monitors, clusters);
+                Map<Cluster, List<Integer>> clusterMap = kMeans.divide();
+                Map<Cluster, List<Result>> functions = DecisionFunctionBuilder.build(clusters, monitors, clusterMap);
+
+                try {
+                    double diagonal = Double.valueOf(diagonalField.getText());
+                    int guarantee = Integer.valueOf(guaranteeField.getText());
+                    BigDecimal price = BigDecimal.valueOf(Double.valueOf(priceField.getText()));
+                    ScreenResolution screenResolution = (ScreenResolution) resolutionCb.getSelectedItem();
+                    MatrixType matrixType = (MatrixType) matrixCb.getSelectedItem();
+
+                    Monitor monitor = new Monitor("analysed", price, diagonal, guarantee, screenResolution, matrixType);
+                    List<Monitor> newMonitorList = new ArrayList<Monitor>();
+                    newMonitorList.addAll(monitors);
+                    newMonitorList.add(monitor);
+
+                    double[] maxSignValue = AlgorithmHelper.findMaxSignValue(newMonitorList);
+                    List<double[]> normalizeValues = AlgorithmHelper.normalizeByMax(newMonitorList, maxSignValue);
+
+                    int monitorIndex = normalizeValues.size() - 1;
+                    double[] monitorNormalValues = normalizeValues.get(monitorIndex);
+
+                    List<Cluster> resultCluster = new ArrayList<Cluster>();
+                    for (Cluster cluster : functions.keySet()) {
+                        List<Result> results = functions.get(cluster);
+                        int counter = 0;
+                        for (Result result : results) {
+                            double[] w = result.getW();
+                            double sum = 0;
+                            for (int i = 0; i < monitorNormalValues.length; i++) {
+                                sum += w[i] * monitorNormalValues[i];
+                            }
+                            sum += result.getW0();
+                            if ((result.isPositive() && sum < 0) || (!result.isPositive() && sum > 0)) {
+                                break;
+                            } else {
+                                counter++;
+                            }
+                        }
+                        if (counter == results.size()) {
+                            resultCluster.add(cluster);
+                        }
+                    }
+                    if (resultCluster.size() == 1) {
+                        FormHelper.showInfo("Указанный монитор относится к категории \""
+                                + resultCluster.get(0).getDescription() + "\"", "Результат");
+                    } else {
+                        FormHelper.showWarning("Распознование указанного монитора невозможно", "Результат");
+                    }
+                } catch (RuntimeException exc) {
+                    FormHelper.showError("Значения полей введены некорректно. Попробуйте еще раз.", "Некорректный ввод");
+                }
+            }
+        });
+
         //region Tab Listeners
 
         analyzeTab.addComponentListener(new ChangeTabListener() {
             @Override
             public void componentShown(ComponentEvent e) {
                 fillComboBoxes();
-
-                List<Cluster> clusters = CLUSTER_DAO.findAll();
-                List<Monitor> monitors = MONITOR_DAO.findAll();
-
-                List<Cluster> clusters1 = new ArrayList<Cluster>() {{
-                    add(new Cluster("k1", "d1", new Monitor(new BigDecimal(13187), 1)));
-                    add(new Cluster("k2", "d2", new Monitor(new BigDecimal(15145), 7)));
-                    add(new Cluster("k3", "d3", new Monitor(new BigDecimal(15596), 4)));
-                }};
-
-                List<NormalizeObject> objects = new ArrayList<NormalizeObject>() {{
-                    add(new Monitor(new BigDecimal(16476), 4));
-                    add(new Monitor(new BigDecimal(17081), 4));
-                    add(new Monitor(new BigDecimal(13827), 5));
-                    add(new Monitor(new BigDecimal(13187), 1));
-                    add(new Monitor(new BigDecimal(11793), 3));
-                    add(new Monitor(new BigDecimal(16728), 4));
-                    add(new Monitor(new BigDecimal(10386), 2));
-                    add(new Monitor(new BigDecimal(15145), 7));
-                    add(new Monitor(new BigDecimal(15596), 4));
-                }};
-
-                K_Means kMeans = new K_Means(monitors, clusters);
-                Map<Cluster, List<Integer>> clusterMap = kMeans.divide();
-                for (Cluster cluster : clusterMap.keySet()) {
-                    List<Integer> integers = clusterMap.get(cluster);
-                    System.out.println(cluster.getName() + " - " + integers);
-                }
-
-                List<List<NormalizeObject>> typicalProjects = new ArrayList<List<NormalizeObject>>();
-                for (Cluster cluster : clusterMap.keySet()) {
-                    List<Integer> indexes = clusterMap.get(cluster);
-                    List<NormalizeObject> clusterObjects = new ArrayList<NormalizeObject>();
-                    for (Integer index : indexes) {
-                        Monitor monitor = monitors.get(index);
-                        clusterObjects.add(monitor);
-                    }
-                    typicalProjects.add(clusterObjects);
-                }
-
-                FunctionBuilder fb3 = new DecisionFunctionBuilder(typicalProjects, null);
-                double[] D3 = fb3.build();
-                Recognizer r3 = new DecisionFunctionRecognizer(D3);
-                r3.printResult("Expended storage decision function result");
             }
         });
 
